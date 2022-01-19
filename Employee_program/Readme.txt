@@ -1,4 +1,4 @@
-This is the folder which our team will use for SPRINT 1. 
+These are the files for the program we will need to eventually make
 
 -ABSTRACT: We need to create a GUI, we must determine what other employee information is useful.
 We must be able to archive an employee (to save for later use), the ability to hide certain aspects
