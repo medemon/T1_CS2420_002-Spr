@@ -1,0 +1,26 @@
+ID,Name,Address,City,State,Zip,Classification,PayMethod,Salary,Hourly,Commission,Route,Account,Phone,SSN,DOB,Start_Date,End_Date,Title,Department
+688997,Karina Gay,998 Vitae St.,Atlanta,GA,45169,1,1,45884.99,46.92,34,30417353-K,465794-3611,801-693-2144,372-25-9228,8/16/88,04/4/19,None,Developer,Management Department
+522759,TaShya D. Snow,2624 Hendrerit St.,College,AK,99789,2,2,50005.50,68.13,25,36644938-8,244269-0000,801-733-1145,823-67-5474,12/26/78,10/4/14,None,Developer,Low Level Design Department
+165966,Rooney Alvarado,4963 Nisl. St. Ap #185,Gillette,WY,20226,3,2,34532.37,21.53,24,37324307-8,422046-0739,801-501-4659,543-13-9755,4/25/92,08/18/11,11/18/04,Data Scientist,Digital design Department
+983010,Jolene Burgess,P.O. Box 873,South Burlington,VT,32036,2,2,20042.77,40.17,23,15300058-1,828625-2906,801-335-8641,407-12-7929,9/21/70,03/21/13,None,Developer,Statistics Department
+939825,Yoko M. Pitts,4825 Nec Ave,Meridian,ID,45614,1,1,35251.89,46.64,13,44553589-3,785957-2104,801-839-9316,543-74-4221,5/10/95,09/13/22,None,Developer,Management Department
+379767,Jin W. Morrison,8628 Id St.,Milwaukee,WI,80356,3,1,64467.10,82.98,33,21038669-6,654904-8491,801-872-7734,535-95-3945,6/18/87,02/15/20,None,Developer,Digital design Department
+900100,Sopoline Bullock,4963 Nisl. St. Ap #579,Idaho Falls,ID,65094,1,2,81929.49,42.76,16,46979340-0,485847-0083,801-971-7554,490-72-1595,8/2/83,12/28/22,None,Cheeto Fetcher,Management Department
+969829,Bruce A. Raymond,65009 Iaculis Road,Juneau,AK,99719,1,2,37697.26,17.33,22,28504011-6,397558-4404,801-285-3873,625-39-1312,4/18/99,04/13/20,None,Data Scientist,Statistics Department
+283809,Hanae Dickson,1633 Dolor Av.,Dover,DE,61813,1,2,51018.46,91.22,35,48786143-K,295643-0090,801-386-1204,503-75-3228,9/25/99,04/14/05,None,Janitor,Statistics Department
+224568,Jenna B. Strickland,70156 Rutrum Street,Phoenix,AZ,86207,1,1,57545.39,24.70,23,33878326-4,248847-6397,801-678-4385,627-62-9056,6/14/86,01/18/21,None,Cheeto Fetcher,Statistics Department
+752867,Ruth S. Haley,6384 Risus Av. Ap #943,Waterbury,CT,58012,2,1,61050.17,42.26,24,12046284-9,399575-5166,801-725-1569,934-39-4014,9/19/75,02/26/21,None,Data Scientist,Low Level Design Department
+163695,Beatrice P. Ware,8903 Eget Rd.,Oklahoma City,OK,20552,1,1,46342.01,86.47,17,26387832-9,212804-3003,801-183-2474,999-12-8532,1/25/81,04/9/07,None,Cheeto Fetcher,Digital design Department
+226423,Randall Horton,3834 Tortor Av.,Topeka,KS,52541,2,2,40872.60,57.05,31,13255163-4,104934-8350,801-408-2249,282-30-5292,9/6/81,11/23/13,None,Janitor,Statistics Department
+349833,Damian Garrison,1646 In Street,San Francisco,CA,95787,2,2,99571.55,82.41,19,45550736-7,779184-5410,801-596-2981,135-49-7444,6/14/76,05/4/12,None,Cheeto Fetcher,Digital design Department
+531061,Alvin Guerrero,248 Mauris St. Ap #748,Indianapolis,IN,92237,2,2,56430.96,38.42,27,16935557-6,994966-8363,801-553-1452,341-12-7620,3/2/74,08/23/20,None,Janitor,Digital design Department
+169927,Alexandra Y. Duke,P.O. Box 727,Springfield,MA,50647,2,2,31631.98,95.73,13,23609043-4,538878-8548,801-927-9574,572-38-9694,11/1/89,11/19/14,None,Janitor,Low Level Design Department
+454912,Sylvester J. Rowland,8628 Pede Ave,Baltimore,MD,93306,1,1,49570.97,25.20,32,5363288-2,339235-5453,801-416-3170,328-16-6130,2/28/68,05/10/09,None,Janitor,Statistics Department
+285767,Porter Wolfe,4842 Tincidunt Av.,Miami,FL,44875,1,1,41212.83,87.54,22,16506147-0,087434-1662,801-119-1732,715-37-8661,3/27/96,01/13/10,None,Data Scientist,Low Level Design Department
+674261,Scott T. Shields,8402 Pretium Rd. Ap #163,Grand Rapids,MI,26321,1,1,86913.93,83.43,15,21871936-8,779622-5618,801-698-8204,716-34-9177,2/22/88,05/17/19,None,Developer,Statistics Department
+265154,Amir Mcintosh,83493 Nibh. Ave,West Jordan,UT,40532,3,2,91254.76,67.73,27,8752077-3,866009-0500,801-522-5720,129-30-4401,6/26/72,06/14/10,None,Data Scientist,Low Level Design Department
+160769,Grant X. Mccarthy,9846 Arcu. Road,Ketchikan,AK,99634,3,1,36025.38,79.99,11,7117844-7,288413-2164,801-671-6744,968-97-9865,8/25/98,04/3/05,None,Developer,Digital design Department
+426824,Mira Y. Wolf,37224 Pharetra Ave,Savannah,GA,22329,1,2,45576.80,26.99,34,12666803-1,158217-3462,801-281-9929,329-44-6554,10/17/80,06/11/14,None,Developer,Statistics Department
+502141,Brock Sandoval,4882 Consectetuer Street,Wyoming,WY,15840,2,1,58436.75,26.25,32,13977869-3,906688-1963,801-999-9119,249-84-2819,6/2/90,02/13/08,None,Senior Developer,Statistics Department
+934003,Kelsey K. Saunders,9920 Aliquam Av. Ap #128,Salt Lake City,UT,97100,1,1,42548.72,31.24,18,37723944-K,769125-4564,801-740-7304,189-83-4776,10/3/81,06/10/22,None,Cheeto Fetcher,Low Level Design Department
+377013,Teagan Goodwin,P.O. Box 317,Akron,OH,66603,3,2,69765.24,84.73,13,24639186-6,433898-4976,801-394-2876,916-15-5956,1/20/64,02/14/07,None,Developer,Digital design Department
