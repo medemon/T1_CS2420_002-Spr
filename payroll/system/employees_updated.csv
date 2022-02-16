@@ -1,0 +1,26 @@
+ID,first,last,address,city,state,zip,classification,paymentmethod,salary,hourly,comission,routing,AccountingNumphone,SSN,DOB,startDate,endDate,title,dept
+688997,Karina,Gay,998 Vitae St.,Atlanta,GA,45169,Salaried,1,30417353-K,465794-3611,801-693-2144,372-25-9228,8/16/88,04/4/19,None,User,Digital design Department
+522759,TaShya,Snow,2624 Hendrerit St.,College,AK,99789,Comissioned,2,36644938-8,244269-0000,801-733-1145,823-67-5474,12/26/78,10/4/14,None,User,Low Level Design Department
+165966,Rooney,Alvarado,4963 Nisl. St. Ap #185,Gillette,WY,20226,Hourly,2,37324307-8,422046-0739,801-501-4659,543-13-9755,4/25/92,08/18/11,11/18/04,Admin,Low Level Design Department
+983010,Jolene,Burgess,P.O. Box 873,South Burlington,VT,32036,Comissioned,2,15300058-1,828625-2906,801-335-8641,407-12-7929,9/21/70,03/21/13,None,User,Statistics Department
+939825,Yoko,Pitts,4825 Nec Ave,Meridian,ID,45614,Salaried,1,44553589-3,785957-2104,801-849-9316,543-74-4221,5/10/95,09/13/22,None,User,Digital design Department
+379767,Jin,Morrison,8628 Id St.,Milwaukee,WI,80356,Hourly,1,21038669-6,654904-8491,801-872-7734,535-95-3945,6/18/87,02/15/20,None,User,Low Level Design Department
+900100,Sopoline,Bullock,4963 Nisl. St. Ap #579,Idaho Falls,ID,65094,Salaried,2,46979340-0,485847-0083,801-971-7554,490-72-1595,8/2/83,12/28/22,None,Human Resources,Digital design Department
+969829,Bruce,Raymond,65009 Iaculis Road,Juneau,AK,99719,Salaried,2,28504011-6,397558-4404,801-285-3873,625-39-1312,4/18/99,04/13/20,None,Admin,Statistics Department
+283809,Hanae,Dickson,1633 Dolor Av.,Dover,DE,61813,Salaried,2,48786143-K,295643-0090,801-581-5522,786-80-1204,7/26/96,03/17/21,None,User,Digital design Department
+224568,Jenna,Strickland,70156 Rutrum Street,Phoenix,AZ,86207,Salaried,1,33878326-4,248847-6397,801-694-4385,627-62-9056,6/14/86,01/18/21,08/28/15,Human Resources,Statistics Department
+752867,Ruth,Haley,6384 Risus Av. Ap #943,Waterbury,CT,58012,Comissioned,1,12046284-9,399575-5166,801-580-1569,934-39-4014,9/19/75,02/26/21,None,Admin,Low Level Design Department
+163695,Beatrice,Ware,8903 Eget Rd.,Oklahoma City,OK,20552,Salaried,1,26387832-9,212804-3003,801-183-2474,999-12-8532,1/25/81,04/9/07,None,Human Resources,Low Level Design Department
+226423,Randall,Horton,3834 Tortor Av.,Topeka,KS,52541,Comissioned,2,13255163-4,104934-8350,801-408-2249,282-30-5292,9/6/81,11/23/13,None,Admin,Statistics Department
+349833,Damian,Garrison,1646 In Street,San Francisco,CA,95787,Comissioned,2,45550736-7,779184-5410,801-619-8873,227-13-6222,7/11/90,04/9/07,None,Admin,Statistics Department
+531061,Alvin,Guerrero,248 Mauris St. Ap #748,Indianapolis,IN,92237,Comissioned,2,16935557-6,994966-8363,801-325-8183,947-12-4803,1/13/73,01/24/09,None,Admin,Statistics Department
+169927,Alexandra,Duke,P.O. Box 727,Springfield,MA,50647,Comissioned,2,23609043-4,538878-8548,801-805-8101,668-38-9574,8/8/97,11/1/16,None,Human Resources,Statistics Department
+454912,Sylvester,Rowland,8628 Pede Ave,Baltimore,MD,93306,Salaried,1,5363288-2,339235-5453,801-786-8095,171-48-3170,4/2/83,02/28/06,None,Admin,Digital design Department
+285767,Porter,Wolfe,4842 Tincidunt Av.,Miami,FL,44875,Salaried,1,16506147-0,087434-1662,801-273-7929,689-42-3247,1/18/66,10/27/10,None,Human Resources,Digital design Department
+674261,Scott,Shields,8402 Pretium Rd. Ap #163,Grand Rapids,MI,26321,Salaried,1,21871936-8,779622-5618,801-958-9448,149-58-4394,6/4/77,10/22/17,None,Human Resources,Low Level Design Department
+265154,Amir,Mcintosh,83493 Nibh. Ave,West Jordan,UT,40532,Hourly,2,8752077-3,866009-0500,801-217-7501,414-74-9299,1/11/89,05/1/09,None,User,Digital design Department
+160769,Grant,Mccarthy,9846 Arcu. Road,Ketchikan,AK,99634,Hourly,1,7117844-7,288413-2164,801-912-3325,458-64-4601,5/22/70,07/18/15,None,Human Resources,Statistics Department
+426824,Mira,Wolf,37224 Pharetra Ave,Savannah,GA,22329,Salaried,2,12666803-1,158217-3462,801-897-9835,351-18-1772,2/5/74,03/18/10,None,Admin,Digital design Department
+502141,Brock,Sandoval,4882 Consectetuer Street,Wyoming,WY,15840,Comissioned,1,13977869-3,906688-1963,801-629-5293,487-53-6686,2/10/79,10/25/19,None,User,Statistics Department
+934003,Kelsey,Saunders,9920 Aliquam Av. Ap #128,Salt Lake City,UT,97100,Salaried,1,37723944-K,769125-4564,801-899-2819,439-15-7772,2/13/73,03/11/07,None,Human Resources,Statistics Department
+377013,Teagan,Goodwin,P.O. Box 317,Akron,OH,66603,Hourly,2,24639186-6,433898-4976,801-189-4776,690-20-5481,6/10/98,02/15/12,None,User,Low Level Design Department
