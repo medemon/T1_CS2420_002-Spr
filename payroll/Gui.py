@@ -1,7 +1,7 @@
 from payroll import *
 from tkinter import *
 from tkinter import ttk
-
+import os, os.path
 
 class Window(Tk):
     def __init__(self, *args, **kwargs):
@@ -10,12 +10,12 @@ class Window(Tk):
         # Styles so the Windows look slightly more appealing
         style = ttk.Style(self)
 
-        self.tk.call('source', 'Forest-ttk-theme-master/forest-dark.tcl')
+        self.tk.call('source', os.path.dirname(__file__) + '\\Forest-ttk-theme-master\\forest-dark.tcl')
 
         style.theme_use('forest-dark')
 
         # Sets the Size of the Window and the Frame
-        self.geometry("300x175")
+        self.geometry("1000x700")
         container = Frame(self)
 
         container.pack(side="top", fill="both", expand=True)
@@ -26,7 +26,7 @@ class Window(Tk):
         # Starts up the List of Screens
         self.screens = {}
         # This is the list of classes that it runs through, generates a frame for, then Appends into the Screens list
-        for F in (Login_Screen, Employee_Profile_Screen, Reports_Screen, Admin_Screen, Employee_Payroll_Screen):
+        for F in (Login_Screen, Employee_Profile_Screen, Reports_Screen, Search_Screen, Employee_Payroll_Screen):
             frame = F(container, self)
 
             self.screens[F] = frame
@@ -98,16 +98,14 @@ class Employee_Profile_Screen(Frame):
         self.emp_payroll_button = Button(self, text="Employee Payroll",
                                          command=lambda: controller.show_frame(Employee_Payroll_Screen))
 
-        self.admin_screen_button = Button(self, text="Admin Screen",
-                                          command=lambda: controller.show_frame(Admin_Screen))
+        self.admin_screen_button = Button(self, text="Search Screen",
+                                          command=lambda: controller.show_frame(Search_Screen))
 
         # Packs all of the Widgets for the screen
         self.title_label.pack()
         self.report_button.pack()
         self.emp_payroll_button.pack()
         self.admin_screen_button.pack()
-
-
 
 
 class Reports_Screen(Frame):
@@ -138,11 +136,11 @@ class Employee_Payroll_Screen(Frame):
     pass
 
 
-class Admin_Screen(Frame):
+class Search_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        self.title_label = Label(self, text="Admin Screen", fg="green", font=("Tahoma", 20))
+        self.title_label = Label(self, text="Search Screen", fg="green", font=("Tahoma", 20))
 
         self.emp_profile_button = Button(self, text="Employee Profile Screen",
                                          command=lambda: controller.show_frame(Employee_Profile_Screen))
