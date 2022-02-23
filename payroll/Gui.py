@@ -68,14 +68,14 @@ class Login_Screen(Frame):
     def retrieve_login(self, controller):
         id_value = self.id_box.get("1.0", "end-1c")
         pw_value = self.p_box.get("1.0", "end-1c")
-        print("Employee ID: " + id_value)
-        print("Password: " + pw_value)
+        print("\nEntered Employee ID: " + id_value)
+        print("Entered Password: " + pw_value)
 
-        print(total_employees[0].emp_id)
+        print("\nHere is a test Employee ID: " + total_employees[0].emp_id)
         # Add way to save UserName  with chosen_user
         for x in total_employees:
             if x.emp_id == id_value:
-                print(get_password(id_value))
+                print("\nHere is the user's password: " + get_password(id_value))
                 chosen_user = id_value
                 if get_password(id_value) == pw_value:
                     print("Successfully Logged In")
