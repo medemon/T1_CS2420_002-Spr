@@ -313,6 +313,36 @@ corresponding employee id.'''
             return e
 
 
+def find_employee_by_partial_id(id_number):
+    '''Takes any amount of id numbers you want and returns any employees that matches '''
+    return_employees = []
+    for e in total_employees:
+        if e.emp_id.startswith(id_number):
+            return_employees.append(e)
+    return return_employees
+
+
+def find_employee_by_last_name_filtered(last_name_entered, select_emp):
+    '''Takes a last name or partial last name and filters through an already filtered list of employees'''
+    return_employees = []
+    last_name_entered = last_name_entered.upper()
+    for e in select_emp:
+        if e.last_name.startswith(last_name_entered):
+            return_employees.append(e)
+    return return_employees
+
+
+def find_employee_by_last_name_total(last_name_entered):
+    '''Takes a last name or partial last name and filters through all employees'''
+    return_employees = []
+    last_name_entered = last_name_entered.upper()
+    for e in total_employees:
+        if e.last_name.startswith(last_name_entered):
+            return_employees.append(e)
+    return return_employees
+
+
+
 def run_payroll():
     if os.path.exists(PAY_LOGFILE):  # pay_log_file is a global variable holding ‘payroll.txt’
         os.remove(PAY_LOGFILE)

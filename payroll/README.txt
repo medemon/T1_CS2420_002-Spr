@@ -10,3 +10,8 @@ My old CS1410 program which we are turning into a fully executable GUI employee 
   (reset employee database, password database).
   
   Ready for GUI implementation
+
+2/24/22
+    Working on GUI Screens
+
+    **Need to install pillow 'python3 -m pip install pillow' used for PNG Images**
