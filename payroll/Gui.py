@@ -191,14 +191,19 @@ class Search_Screen(Frame):
         self.search_button = Button(self, text="Search", width=7, bg="grey", font=("Tahoma", 10, "bold"),
                                     command=lambda: self.display_results(self.results_screen, controller)
                                     )
-        self.search_button.place(x=115, y=380)
+        self.search_button.place(x=125, y=380)
+
+        # New Employee Button and changes selected employee to 0
+        self.new_employee_button = Button(self, text="Add Employee", width=12, bg="grey", font=("Tahoma", 10, "bold"),
+                                          command=lambda: controller.select_employee('0'))
+        self.new_employee_button.place(x=15, y=450)
         # Report Button
 
         self.report_button = Button(self, text="Reports Screen",
-                                    command=lambda: controller.show_frame(Employee_Profile_Screen))
+                                    command=lambda: controller.show_frame(Reports_Screen))
         # Runs an Admin Check
         if controller.check_admin():
-            self.report_button.place(x=85, y=500)
+            self.report_button.place(x=185, y=450)
 
     # Called upon Searching to populate fields
     def display_results(self, results_screen, controller):
@@ -235,7 +240,7 @@ class Search_Screen(Frame):
 
         y_loc = 0
 
-        # Loops through the retrieved Results and generates a button for each of them
+        # Loops through the retrieved Results and generates a button for each of them which changes the selected ID
         for e in retrieved_employees:
             Button(results_screen, font=("Tahoma", 13, "bold"),
                    text="Last Name: " + e.last_name + "     ID: " + e.emp_id,
