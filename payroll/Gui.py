@@ -1,3 +1,5 @@
+from tkinter.ttk import Separator
+
 from payroll import *
 from tkinter import *
 from tkinter import ttk
@@ -130,16 +132,25 @@ class Employee_Profile_Screen(Frame):
 class Reports_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
-
-        self.title_label = Label(self, text="Report Screen", fg="green", font=("Tahoma", 20))
-
-        self.emp_profile_button = Button(self, text="Employee Profile Screen",
-                                         command=lambda: controller.show_frame(Employee_Profile_Screen))
-
+        #Title and Return Button
+        self.title_label = Label(self, text="Paylog Report", fg="green", font=("Tahoma", 20,"underline"))
+        self.emp_profile_button = Button(self, text="Return to Search Screen",
+                                         command=lambda: controller.show_frame(Search_Screen))
         self.title_label.pack()
-        self.emp_profile_button.pack()
+        self.emp_profile_button.place(x= 10, y=650)
 
-    pass
+        f = open(os.path.dirname(__file__) + "\\HoursReports\\paylog.txt", "r")
+        yloc = 50
+        xloc = 0
+        for x in f:
+            print("We in")
+            Label(self, text=x, fg="green", font=("Tahoma", 8)).place(x=xloc, y=yloc)
+            yloc += 25
+            if yloc >= 625:
+                xloc+=500
+                yloc=50
+
+
 
 
 class Employee_Payroll_Screen(Frame):
