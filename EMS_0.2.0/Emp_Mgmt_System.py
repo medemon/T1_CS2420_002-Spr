@@ -1,9 +1,10 @@
-from os import system
 from tkinter import simpledialog
+import system.System_Control as system
 from system.Database_Manager import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from tkcalendar import *
 from PIL import ImageTk, Image
 from pathlib import Path
 
@@ -77,44 +78,59 @@ class Window(Tk):
 
 
 class Login_Screen(Frame):
-
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
-        print("Logging In")
+        # Creates the Logo Image on the Page
+        img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
+        icon_image = ImageTk.PhotoImage(img)
+        self.logo_label = Label(self, width=300, height=175, image=icon_image)
+        self.logo_label.image = icon_image
+        self.logo_label.place(y=45, x=5)
 
-        self.id_label = Label(self, text="User Name", fg="green", font=("Tahoma", 14))
-        self.id_box = Entry(self, width=25, font="Tahoma")
+        # Login Screen Title
+        self.title_label = Label(self, text="Employee Management", fg="green", anchor=CENTER,
+                                font=("Tahoma", 18, "underline", "bold"))
+        self.title_label.place(height=50, width=300)
 
-        self.pw_label = Label(self, text="Password", fg="green", font=("Tahoma", 14))
-        self.p_box = Entry(self, width=25, font="Tahoma", show="*")
+        # Login Frame
+        self.login_screen = Frame(self, height=600, width=690, bg="gray")
+        self.login_screen.place(x=300, y=10)
 
-        self.submit_button = Button(self, text="Login", command=lambda: self.retrieve_login(controller))
+        # Login labels and entry fields        
+        self.login_label = Label(self, text="Please log in", font=("Tahma", 18))
+        self.login_label.place(x=150, y=270, anchor=CENTER)
+        self.msg = StringVar()
+        self.msg_label = Label(self, textvariable=self.msg, font=("Tahma", 15))
+        self.msg_label.place(x=150, y=300, anchor=CENTER)
+        self.id_label = Label(self.login_screen, text="Employee ID", bg="grey", font=("Tahoma", 13))
+        self.id = StringVar()
+        self.id_box = Entry(self.login_screen, textvariable=self.id, bd=1, width=30, font=("Tahoma", 13))
+        self.id_label.place(x=180, y=225)
+        self.id_box.place(x=280, y=225)
+        self.pw = StringVar()
+        self.pw_label = Label(self.login_screen, text="Password", bg="grey", font=("Tahoma", 13))
+        self.pw_box = Entry(self.login_screen, textvariable=self.pw, bd=1, width=30, show="*", font=("Tahoma", 13))
+        self.pw_label.place(x=180, y=275)
+        self.pw_box.place(x=280, y=275)
 
-        # Packs all of the Widgets for the screen
-        self.id_label.pack()
-        self.id_box.pack()
-
-        self.pw_label.pack()
-        self.p_box.pack()
-
-        self.submit_button.pack()
+        # Submit button
+        self.submit_button = Button(self.login_screen, text="Login", command=lambda: self.retrieve_login(controller), width=14, bg="grey", font=("Tahoma", 10, "bold"))
+        self.submit_button.place(x=300, y=350)
 
     def retrieve_login(self, controller):
-        id_value = self.id_box.get()
-        pw_value = self.p_box.get()
-        print("\nEntered Employee ID: " + id_value)
-        print("Entered Password: " + pw_value)
+        id_value = self.id.get()
+        pw_value = self.pw.get()
 
         # Add way to save UserName  with chosen_user
+        self.msg.set("Invalid Employee ID!")
         for x in total_employees:
             if x.emp_id == id_value:
-                print("\nHere is the user's password: " + get_password(id_value))
-                chosen_user = id_value
                 if get_password(id_value) == pw_value:
-                    print("Successfully Logged In")
+                    self.msg.set("Success!")
                     self.login_success(controller, id_value)
                 else:
-                    print("Incorrect Password")
+                    self.msg.set("Invalid password!")
+                
 
     def login_success(self, controller, id):
         controller.user_id = self.id_box.get()
@@ -124,12 +140,14 @@ class Login_Screen(Frame):
 class Employee_Profile_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+
         # Creates the Logo Image on the Page
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
         icon_image = ImageTk.PhotoImage(img)
         self.logo_label = Label(self, width=300, height=175, image=icon_image)
         self.logo_label.image = icon_image
         self.logo_label.place(y=45, x=5)
+
         # Employee Profle Screen Title
         self.title_label = Label(self, text="Employee Profile Screen", fg="green",
                                 font=("Tahoma", 18, "underline", "bold"))
@@ -158,66 +176,71 @@ class Employee_Profile_Screen(Frame):
         # Profile labels, entry fields
         self.first_name = StringVar()
         self.first_name_label = Label(self.profile_screen, text="First Name:", bg="grey", font=("Tahoma", 13))
-        self.first_name_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.first_name)
+        self.first_name_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.first_name, font=("Tahoma", 13))
         self.first_name_label.place(x=10, y=50)
         self.first_name_entry.place(x=120, y=50)
         self.last_name = StringVar()
         self.last_name_label = Label(self.profile_screen, text="Last Name:", bg="grey", font=("Tahoma", 13))
-        self.last_name_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.last_name)
+        self.last_name_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.last_name, font=("Tahoma", 13))
         self.last_name_label.place(x=10, y=90)
         self.last_name_entry.place(x=120, y=90)
         self.address = StringVar()
         self.address_label = Label(self.profile_screen, text="Address:", bg="grey", font=("Tahoma", 13))
-        self.address_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.address)
+        self.address_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.address, font=("Tahoma", 13))
         self.address_label.place(x=10, y=130)
         self.address_entry.place(x=120, y=130)
         self.city = StringVar()
         self.city_label = Label(self.profile_screen, text="City:", bg="grey", font=("Tahoma", 13))
-        self.city_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.city)
+        self.city_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.city, font=("Tahoma", 13))
         self.city_label.place(x=10, y=170)
         self.city_entry.place(x=120, y=170)
+        self.states_opts = [ 'AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
+           'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME',
+           'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM',
+           'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX',
+           'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
         self.state = StringVar()
         self.state_label = Label(self.profile_screen, text="State:", bg="grey", font=("Tahoma", 13))
-        self.state_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.state)
+        self.state_drop = OptionMenu(self.profile_screen, self.state, *self.states_opts)
         self.state_label.place(x=10, y=210)
-        self.state_entry.place(x=120, y=210)
+        self.state_drop.place(x=120, y=210)
         self.zip = StringVar()
         self.zip_label = Label(self.profile_screen, text="Zipcode:", bg="grey", font=("Tahoma", 13))
-        self.zip_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.zip)
+        self.zip_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.zip, font=("Tahoma", 13))
         self.zip_label.place(x=10, y=250)
         self.zip_entry.place(x=120, y=250)
         self.phone = StringVar()
         self.phone_label = Label(self.profile_screen, text="Phone:", bg="grey", font=("Tahoma", 13))
-        self.phone_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.phone)
+        self.phone_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.phone, font=("Tahoma", 13))
         self.phone_label.place(x=10, y=290)
         self.phone_entry.place(x=120, y=290)
         self.dob = StringVar()
         self.dob_label = Label(self.profile_screen, text="DOB:", bg="grey", font=("Tahoma", 13))
-        self.dob_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.dob)
+        self.dob_entry = DateEntry(self.profile_screen, background="white", foreground="black", textvariable=self.dob, font=("Tahoma", 13))
         self.dob_label.place(x=10, y=330)
         self.dob_entry.place(x=120, y=330)
         self.dept = StringVar()
         self.dept_label = Label(self.profile_screen, text="Department:", bg="grey", font=("Tahoma", 13))
-        self.dept_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.dept)
+        self.dept_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.dept, font=("Tahoma", 13))
         self.dept_label.place(x=10, y=370)
         self.dept_entry.place(x=120, y=370)
         self.title = StringVar()
         self.title_label = Label(self.profile_screen, text="Title:", bg="grey", font=("Tahoma", 13))
-        self.title_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.title)
+        self.title_entry = Entry(self.profile_screen, bd=1, width=60, textvariable=self.title, font=("Tahoma", 13))
         self.title_label.place(x=10, y=410)
         self.title_entry.place(x=120, y=410)
         self.start_date = StringVar()
         self.start_date_label = Label(self.profile_screen, text="Start Date:", bg="grey", font=("Tahoma", 13))
-        self.start_date_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.start_date)
+        self.start_date_entry = DateEntry(self.profile_screen, background="white", foreground="black", textvariable=self.start_date, font=("Tahoma", 13))
         self.start_date_label.place(x=10, y=450)
         self.start_date_entry.place(x=120, y=450)
         self.end_date = StringVar()
         self.end_date_label = Label(self.profile_screen, text="End Date:", bg="grey", font=("Tahoma", 13))
-        self.end_date_entry = Entry(self.profile_screen, bd=1, width=75, textvariable=self.end_date)
+        self.end_date_entry = DateEntry(self.profile_screen, state = 'disabled', background="white", foreground="black", textvariable=self.end_date, font=("Tahoma", 13))
         self.end_date_label.place(x=10, y=490)
         self.end_date_entry.place(x=120, y=490)
         self.archived = BooleanVar()
-        self.archived_checkbox = Checkbutton(self.profile_screen, text="Archived", bg='grey', selectcolor='black', variable=self.archived, font=("Tahoma", 13))
+        self.archived_checkbox = Checkbutton(self.profile_screen, text="Archived", bg='grey', selectcolor='black', variable=self.archived, command=lambda: self.archive_toggle(), font=("Tahoma", 13))
         self.archived_checkbox.place(x=10, y=530)
         self.is_admin = BooleanVar()
         self.admin_checkbox = Checkbutton(self.profile_screen, text="Admin", bg='grey', selectcolor='black', variable=self.is_admin, font=("Tahoma", 13))
@@ -230,9 +253,9 @@ class Employee_Profile_Screen(Frame):
         self.save_button.place(x=150, y=380, anchor=CENTER)
 
         # Password Diaplog Button
-        self.payroll_button = Button(self, text="Change Password", width=14, bg="grey", font=("Tahoma", 10, "bold"),
+        self.password_button = Button(self, text="Change Password", width=14, bg="grey", font=("Tahoma", 10, "bold"),
                                     command=lambda: self.new_password_dialog(controller))
-        self.payroll_button.place(x=150, y=420, anchor=CENTER)
+        self.password_button.place(x=150, y=420, anchor=CENTER)
 
         # Payroll Screen Button
         self.payroll_button = Button(self, text="Employee payroll", width=14, bg="grey", font=("Tahoma", 10, "bold"),
@@ -248,6 +271,11 @@ class Employee_Profile_Screen(Frame):
         '''For the Employee_Profile_Screen this method will check the permissions of the logged in user to determine what they are allowed to edit
         and populates the entry box with data from the given id's employee object'''
 
+        #widget lists
+        user_access = [self.address_entry,self.city_entry,self.zip_entry,self.phone_entry]
+        admin_access = [self.first_name_entry,self.last_name_entry,self.dept_entry,self.title_entry]
+        str_vars = [self.address,self.state,self.city,self.zip,self.phone,self.first_name,self.last_name,self.dob,self.dept,self.title,self.start_date,self.end_date]
+
         # If id is 0 then starts a new employee with a randomly generated ID.
         if id == '0':
             new_id = str(system.four_random()) + str(system.two_random())
@@ -257,33 +285,12 @@ class Employee_Profile_Screen(Frame):
             self.arch.set("Enter New Employee")
             self.employee = None
             self.payroll_button.config(state='disabled')
-            return        
+            for i in str_vars:
+                i.set('')
+            self.archived.set(False)
+            self.is_admin.set(False)
+            return
 
-        # Run permissions check
-        user_access = [self.address_entry,self.state_entry,self.city_entry,self.zip_entry,self.phone_entry]
-        admin_access = [self.first_name_entry,self.last_name_entry,self.dob_entry,self.dept_entry,self.title_entry,self.start_date_entry,self.end_date_entry]
-        # Always sets all Entry to disable first to avoid fields remaining open when switching viewed profiles.
-        for i in user_access:
-            i.config(state = 'disabled', disabledbackground="grey", disabledforeground='white')
-        for i in admin_access:
-            i.config(state = 'disabled', disabledbackground="grey", disabledforeground='white')
-        self.payroll_button.config(state='disabled')
-        self.archived_checkbox.config(state='disabled')
-        self.admin_checkbox.config(state='disabled')
-        self.mode.set("Read-only Mode")
-        # Owned account access
-        if controller.user_id == id or controller.admin.get():
-            for i in user_access:
-                i.config(state = 'normal', bg="white", fg="black")
-            self.payroll_button.config(state='normal')
-            self.mode.set("User Edit Mode")
-        # Admin access
-        if controller.admin.get():
-            for i in admin_access:
-                i.config(state = 'normal', bg="white", fg="black")
-            self.archived_checkbox.config(state='normal')
-            self.admin_checkbox.config(state='normal')
-            self.mode.set("Admin Mode")
         # Populate fields
         self.employee = find_employee_by_id(id)
         self.first_name.set(self.employee.first_name)
@@ -301,16 +308,108 @@ class Employee_Profile_Screen(Frame):
         self.emp_id.set(self.employee.emp_id)
         self.archived.set(int(self.employee.archived))
         self.is_admin.set(int(self.employee.admin))
-        if self.employee.archived == True:
+        if self.archived.get() == True:
             self.arch.set("Employee is INACTIVE")
         else:
-            self.arch.set("Employee is ACTIVE")
+            self.arch.set("Employee is ACTIVE")    
+
+        # Run permissions check
+        # Always sets all Entry to disable first to avoid fields remaining open when switching viewed profiles.
+        for i in user_access:
+            i.config(state = 'disabled', disabledbackground="grey", disabledforeground='white')
+        for i in admin_access:
+            i.config(state = 'disabled', disabledbackground="grey", disabledforeground='white')
+        self.payroll_button.config(state='disabled')
+        self.state_drop.config(state='disabled')
+        self.archived_checkbox.config(state='disabled')
+        self.admin_checkbox.config(state='disabled')
+        self.dob_entry.config(state='disabled')
+        self.start_date_entry.config(state='disabled')
+        self.end_date_entry.config(state = 'disabled')
+        self.mode.set("Read-only Mode")
+        # Owned account access
+        if controller.user_id == id or controller.admin.get():
+            for i in user_access:
+                i.config(state = 'normal')
+            self.payroll_button.config(state='normal')
+            self.state_drop.config(state='normal')
+            self.mode.set("User-Edit Mode")
+        # Admin access
+        if controller.admin.get():
+            for i in admin_access:
+                i.config(state = 'normal')
+            self.archive_toggle()
+            self.dob_entry.config(state='normal')
+            self.start_date_entry.config(state='normal')
+            self.archived_checkbox.config(state='normal')
+            self.admin_checkbox.config(state='normal')
+            self.mode.set("Admin Mode")
         self.first_time_check(controller)
 
+    def archive_toggle(self):
+        '''Simple toggle to keep the End date field empty if not archived.'''
+        if self.archived.get() == True:
+            self.end_date_entry.config(state = 'normal')
+        else:
+            self.end_date_entry.config(state = 'disabled')
+            self.end_date.set("None")
+
+    def field_check(self):
+        '''Checks fields for invalid entires'''
+        field_pass = True
+        error_message = ""
+        while field_pass == True:
+            if self.first_name.get().replace(' ','').isalpha() == False or self.first_name.get() == "":
+                error_message = "Invalid value for First Name. Letter characters only."
+                field_pass = False
+            if self.last_name.get().replace(' ','').isalpha() == False or self.last_name.get() == "":
+                error_message = "Invalid value for Last Name. Letter characters only."
+                field_pass = False
+            if self.address.get() == "":
+                error_message = "Please enter an address."
+                field_pass = False
+            if self.city.get().replace(' ','').isalpha() == False or self.city.get() == "":
+                error_message = "Invalid value for City. Letter characters only."
+                field_pass = False
+            if self.zip.get().replace('-','').isnumeric() == False or len(self.zip.get().replace('-','')) < 5:
+                error_message = "Invalid value for Zipcode. At least 5 numerical characters only."
+                field_pass = False
+            if self.phone.get().replace('-','').replace('Ex:','').isnumeric() == False or len(self.phone.get().replace('-','')) < 10:
+                error_message = "Invalid value for Phone Number. Include area code, prefix extensions with 'Ex:', numerical characters only."
+                field_pass = False
+            if self.dept.get().replace(' ','').isalpha() == False or self.dept.get() == "":
+                error_message = "Invalid value for Department. Letter characters only."
+                field_pass = False
+            if self.title.get().replace(' ','').isalpha() == False or self.title.get() == "":
+                error_message = "Invalid value for Title. Letter characters only."
+                field_pass = False
+            if self.dob.get() == "":
+                error_message = "Please enter a start date."
+                field_pass = False
+            if self.start_date.get() == "":
+                error_message = "Please enter a start date."
+                field_pass = False
+            if self.archived == True and self.end_date.get() == "None":
+                error_message = "Employee is archived, please enter their end date."
+                field_pass = False
+            break
+        if field_pass == False:
+            messagebox.showinfo("Message", error_message)
+            return False
+        else:
+            return True
+    
     def save(self, controller):
-            '''Saves all entered data to the employee object ~EXPAND ON THIS LATER, NEEDS CHECKS FOR TRASH ENTRIES!~'''
-            query = messagebox.askquestion('save','save changes?')
+            '''Saves all entered data to the employee object'''
+            #testing check to bipass dialog
+            if testing == 1:
+                query = 'yes'
+            else:
+                query = messagebox.askquestion('save','save changes?')
             if query == 'yes':
+                if self.field_check() == False:
+                    '''Does not save if field check fails'''
+                    return
                 if self.employee != None:
                     self.employee.first_name = self.first_name.get()
                     self.employee.last_name =self.last_name.get()
@@ -319,15 +418,22 @@ class Employee_Profile_Screen(Frame):
                     self.employee.state = self.state.get()
                     self.employee.zipcode = self.zip.get()
                     self.employee.phone = self.phone.get()
-                    self.employee.DOB = self.dob.get()
+                    self.employee.DOB = self.dob_entry.get_date().strftime("%m/%d/%Y")
                     self.employee.dept = self.dept.get()
                     self.employee.title = self.title.get()
-                    self.employee.start_date = self.start_date.get()
-                    self.employee.end_date = self.end_date.get()
+                    self.employee.start_date = self.start_date_entry.get_date().strftime("%m/%d/%Y")
+                    if self.archived.get() == True:
+                        self.employee.end_date = self.end_date_entry.get_date().strftime("%m/%d/%Y")
+                    else:
+                        self.employee.end_date = "None"
                     self.employee.archive_employee(self.archived.get())
                     self.employee.set_admin(self.is_admin.get())
-                    messagebox.showinfo("Message", "Save Successful!")
+                    # Prevents dialog or writing to file in testing
+                    if testing != 1:
+                        messagebox.showinfo("Message", "Save Successful!")
+                        system.update_employee_file(total_employees)
                 else:
+                    '''creates new entry for new employee'''
                     new_list = [self.emp_id.get(),self.first_name.get(),self.last_name.get(),self.address.get(),self.city.get(),self.state.get(),self.zip.get(),self.phone.get(),
                                 self.dob.get(),self.dept.get(),self.title.get(),self.start_date.get(),self.end_date.get(),self.archived.get(),self.is_admin.get()]
                     messagebox.showinfo("Message", "Please continue on payroll screen")
@@ -337,7 +443,6 @@ class Employee_Profile_Screen(Frame):
 
     def new_password_dialog(self, controller):
         '''Upon User selecting new password, this method will raise a simple dialog box for them to enter the new password'''
-        messagebox.showinfo("Message", "Your password is set to default and needs to change!")
         query = simpledialog.askstring("New Password", "Enter New Password.", show="*")
         if query != None:
             set_password(controller.chosen_employee, query)
@@ -346,9 +451,13 @@ class Employee_Profile_Screen(Frame):
             messagebox.showinfo("Message", "Password not changed!")
 
     def first_time_check(self, controller):
-        '''This method checks if the employee passwors is at its default for first time users, so it will bring up the new password prompt'''
+        '''This method checks if the employee password is at its default for first time users, so it will bring up the new password prompt'''
+        # Quick flag to disable this for testing sanity
+        if testing == 1:
+            return
         default = f"{self.employee.last_name}{self.employee.first_name}{self.employee.SSN[-4:]}"
         if self.employee.get_password() ==  default and controller.user_id == self.employee.emp_id:
+            messagebox.showinfo("Message", "Your password is set to default and needs to change!")
             self.new_password_dialog(controller)
 
 class Reports_Screen(Frame):
@@ -411,7 +520,7 @@ class Employee_Payroll_Screen(Frame):
         # Pay related labels, entry fields
         self.ssn = StringVar()
         self.ssn_label = Label(self.profile_screen, text="SSN:", bg="grey", font=("Tahoma", 13))
-        self.ssn_entry = Entry(self.profile_screen, bd=1, width=70, textvariable=self.ssn)
+        self.ssn_entry = Entry(self.profile_screen, bd=1, width=55, textvariable=self.ssn, font=("Tahoma", 13))
         self.ssn_label.place(x=10, y=170)
         self.ssn_entry.place(x=150, y=170)
         self.classy_opts = ['Salaried','Commissioned','Hourly']
@@ -423,12 +532,12 @@ class Employee_Payroll_Screen(Frame):
         self.classy_drop.place(x=150, y=210)
         self.salary = StringVar()
         self.salary_label = Label(self.profile_screen, text="Salary:", bg="grey", font=("Tahoma", 13))
-        self.salary_entry = Entry(self.profile_screen, bd=1, width=70, textvariable=self.salary)
+        self.salary_entry = Entry(self.profile_screen, bd=1, width=55, textvariable=self.salary, font=("Tahoma", 13))
         self.salary_label.place(x=10, y=250)
         self.salary_entry.place(x=150, y=250)
         self.rate = StringVar()
         self.rate_label = Label(self.profile_screen, text="Rate:", bg="grey", font=("Tahoma", 13))
-        self.rate_entry = Entry(self.profile_screen, bd=1, width=70, textvariable=self.rate)
+        self.rate_entry = Entry(self.profile_screen, bd=1, width=55, textvariable=self.rate, font=("Tahoma", 13))
         self.rate_label.place(x=10, y=290)
         self.rate_entry.place(x=150, y=290)
         self.meth_opts = ['Direct Deposit', 'Mailed']
@@ -440,12 +549,12 @@ class Employee_Payroll_Screen(Frame):
         self.pay_method_drop.place(x=150, y=330)
         self.routing = StringVar()
         self.routing_label = Label(self.profile_screen, text="Route Number:", bg="grey", font=("Tahoma", 13))
-        self.routing_entry = Entry(self.profile_screen, bd=1, width=70, textvariable=self.routing)
+        self.routing_entry = Entry(self.profile_screen, bd=1, width=55, textvariable=self.routing, font=("Tahoma", 13))
         self.routing_label.place(x=10, y=370)
         self.routing_entry.place(x=150, y=370)
         self.account = StringVar()
         self.account_label = Label(self.profile_screen, text="Account Number:", bg="grey", font=("Tahoma", 13))
-        self.account_entry = Entry(self.profile_screen, bd=1, width=70, textvariable=self.account)
+        self.account_entry = Entry(self.profile_screen, bd=1, width=55, textvariable=self.account, font=("Tahoma", 13))
         self.account_label.place(x=10, y=410)
         self.account_entry.place(x=150, y=410)
 
@@ -475,15 +584,21 @@ class Employee_Payroll_Screen(Frame):
         '''For the Employee_Payroll_Screen this method will check the permissions of the logged in user to determine what they are allowed to edit
         and populates the entry box with data from the given id's employee object'''
 
+        #widget lists
+        user_access = [self.routing_entry,self.account_entry]
+        admin_access = [self.salary_entry,self.rate_entry,self.ssn_entry]
+        str_vars = [self.routing,self.account,self.salary,self.rate_entry,self.ssn]
+
         # If there is a list, it is a new employee, leaves entries blank and open
         if isinstance(arg,list):
              self.arch.set("Enter New Employee")
              self.new_list = arg
              self.receipt_button.config(state='disable')
+             for i in str_vars:
+                i.set('')
              return
+
         # Run permissions check
-        user_access = [self.routing_entry,self.account_entry]
-        admin_access = [self.salary_entry,self.rate_entry,self.ssn_entry]
         # Always sets all Entry to disable first to avoid fields remaining open when switching viewed profiles.
         for i in user_access:
             i.config(state='disabled', disabledbackground='grey', disabledforeground='white')
@@ -517,76 +632,122 @@ class Employee_Payroll_Screen(Frame):
             self.rate_entry.config(state='disabled', disabledbackground='grey', disabledforeground='white')
         elif int(self.employee.classification) == 2:
             self.salary.set(self.employee.pay_rates[0])
-            self.rate.set(self.employee.pay_rates[1])
+            self.rate.set(self.employee.pay_rates[2])
             self.receipt_button.config(state='normal')
         elif int(self.employee.classification) == 3:
-            self.rate.set(self.employee.pay_rates[2])
+            self.rate.set(self.employee.pay_rates[1])
             self.salary_entry.config(state='disabled', disabledbackground='grey', disabledforeground='white')
         self.routing.set(self.employee.route)
         self.account.set(self.employee.accounting)
         self.emp_id.set(self.employee.emp_id)
         self.ssn.set(self.employee.SSN)
-        if self.employee.archived == True:
+        if self.employee.archived == 1:
             self.arch.set("Employee is INACTIVE")
         else:
             self.arch.set("Employee is ACTIVE")
 
+    def field_check(self):
+        '''Checks fields for invalid entires'''
+        field_pass = True
+        error_message = ""
+        while field_pass == True:
+            if self.classy.get() == 'Salaried':
+                if self.salary.get().replace('.','').isnumeric() == False or self.salary.get() == "":
+                    error_message = "Invalid value for Salary. Remove commas, numerical characters only."
+                    field_pass = False
+            if self.classy.get() == 'Commissioned':
+                if self.salary.get().replace('.','').isnumeric() == False or self.salary.get() == "":
+                    error_message = "Invalid value for Salary. Remove commas, numerical characters only."
+                    field_pass = False
+                if self.rate.get().replace('.','').isnumeric() == False or self.rate.get() == "":
+                    error_message = "Invalid value for Rate. Remove commas, numerical characters only."
+                    field_pass = False
+            if self.classy.get() == 'Hourly':
+                if self.rate.get().replace('.','').isnumeric() == False or self.rate.get() == "":
+                    error_message = "Invalid value for Rate. Remove commas, numerical characters only."
+                    field_pass = False
+            if self.routing.get().replace('-','')[:-1].isnumeric() == False or 6 > len(self.routing.get().replace('-','')) > 9:
+                error_message = "Invalid value for Routing Number. 6 to 9 digits, numerical characters only with exception of last digit."
+                field_pass = False
+            if self.account.get().replace('-','').isnumeric() == False or len(self.account.get().replace('-','')) < 9:
+                error_message = "Invalid value for Routing Number. At least, numerical characters only."
+                field_pass = False
+            if self.ssn.get().replace('-','').isnumeric() == False or len(self.ssn.get().replace('-','')) != 9:
+                error_message = "Invalid value for Social Security Number. Must be 9 numerical characters only."
+                field_pass = False
+
+            break
+        if field_pass == False:
+            messagebox.showinfo("Message", error_message)
+            return False
+        else:
+            return True
+
     def save(self,controller):
             '''Saves all entered data to the employee object ~EXPAND ON THIS LATER, NEEDS CHECKS FOR TRASH ENTRIES!~'''
+            #testing check to bipass dialog
+            if testing == 1:
+                query = 'yes'
+            else:
+                query = messagebox.askquestion('save','save changes?')
             # If there is a list, it is a new Employee, uses the new Employee save
-            if self.new_list != None:
-                salary = 0
-                comm = 0
-                hourly = 0 
-                if self.classy.get() == 'Salaried':
-                    self.classy.set(1)
-                    salary = self.salary.get()
-                elif self.classy.get() == 'Commissioned':
-                    self.classy.set(2)
-                    salary = self.salary.get()
-                    comm = self.rate.get()
-                elif self.classy.get() == 'Hourly':
-                    self.classy.set(3)
-                    comm = self.rate.get()
-                if self.pay_method.get() == 'Direct Deposit':
-                    self.pay_method.set(2)
-                else:
-                     self.pay_method.set(1)
-                add = [self.classy.get(),[salary,comm,hourly],self.pay_method.get(),self.routing.get(),self.account.get(),self.ssn.get()]
-                self.new_list.extend(add)
-                e = Employee(self.new_list[0], self.new_list[2], self.new_list[1], self.new_list[3], self.new_list[4], self.new_list[5], self.new_list[6], 
-                             self.new_list[15], self.new_list[17], self.new_list[16], self.new_list[18],self.new_list[19], self.new_list[7], self.new_list[20], 
-                             self.new_list[8], self.new_list[11], self.new_list[12], self.new_list[10], self.new_list[9], self.new_list[13], self.new_list[14])
-                total_employees.append(e)
-                e.set_default_password()
-                controller.select_employee(e.emp_id)
-                messagebox.showinfo("Message", "New Employee Added!")
-                return
-
-            query = messagebox.askquestion('save','save changes?')
             if query == 'yes':
-                if self.classy.get() == 'Salaried':
-                    if self.salary.get() != "":
-                        self.employee.pay_rates[0] = self.salary.get()
-                    self.employee.classification = Salaried(self.employee.pay_rates[0])
-                elif self.classy.get() == 'Commissioned':
-                    if self.salary.get() != "":
-                        self.employee.pay_rates[0] = self.salary.get()
-                    if self.rate.get() != "":
-                        self.employee.pay_rates[1] = self.rate.get()
-                    self.employee.classification = Commissioned(self.employee.pay_rates[0],self.employee.pay_rates[1])
-                elif self.classy.get() == 'Hourly':
-                    if self.rate.get() != "":
-                        self.employee.pay_rates[2] = self.rate.get()
-                    self.employee.classification = Hourly(self.employee.pay_rates[2])
-                if self.pay_method.get() == 'Direct Deposit':
-                    self.employee.payment_method = 2
-                else:
-                    self.employee.payment_method = 1
-                self.employee.route = self.routing.get()
-                self.employee.accounting = self.account.get()
-                self.employee.SSN = self.ssn.get()
-                messagebox.showinfo("Message", "Save Successful!")
+                if self.field_check() == False:
+                    '''Does not save if field check fails'''
+                    return
+                if self.new_list != None:
+                    salary = 0
+                    comm = 0
+                    hourly = 0 
+                    if self.classy.get() == 'Salaried':
+                        self.classy.set(1)
+                        salary = self.salary.get()
+                    elif self.classy.get() == 'Commissioned':
+                        self.classy.set(2)
+                        salary = self.salary.get()
+                        comm = self.rate.get()
+                    elif self.classy.get() == 'Hourly':
+                        self.classy.set(3)
+                        comm = self.rate.get()
+                    if self.pay_method.get() == 'Direct Deposit':
+                        self.pay_method.set(2)
+                    else:
+                        self.pay_method.set(1)
+                    add = [self.classy.get(),[salary,comm,hourly],self.pay_method.get(),self.routing.get(),self.account.get(),self.ssn.get()]
+                    self.new_list.extend(add)
+                    e = Employee(self.new_list[0], self.new_list[2], self.new_list[1], self.new_list[3], self.new_list[4], self.new_list[5], self.new_list[6], 
+                                self.new_list[15], self.new_list[17], self.new_list[16], self.new_list[18],self.new_list[19], self.new_list[7], self.new_list[20], 
+                                self.new_list[8], self.new_list[11], self.new_list[12], self.new_list[10], self.new_list[9], self.new_list[13], self.new_list[14])
+                    total_employees.append(e)
+                    e.set_default_password()
+                    controller.select_employee(e.emp_id)
+                    messagebox.showinfo("Message", "New Employee Added!")
+                else:  
+                    if self.classy.get() == 'Salaried':
+                        if self.salary.get() != "":
+                            self.employee.pay_rates[0] = self.salary.get()
+                        self.employee.classification = Salaried(self.employee.pay_rates[0])
+                    elif self.classy.get() == 'Commissioned':
+                        if self.salary.get() != "":
+                            self.employee.pay_rates[0] = self.salary.get()
+                        if self.rate.get() != "":
+                            self.employee.pay_rates[2] = self.rate.get()
+                        self.employee.classification = Commissioned(self.employee.pay_rates[0],self.employee.pay_rates[1])
+                    elif self.classy.get() == 'Hourly':
+                        if self.rate.get() != "":
+                            self.employee.pay_rates[1] = self.rate.get()
+                        self.employee.classification = Hourly(self.employee.pay_rates[2])
+                    if self.pay_method.get() == 'Direct Deposit':
+                        self.employee.payment_method = 2
+                    else:
+                        self.employee.payment_method = 1
+                    self.employee.route = self.routing.get()
+                    self.employee.accounting = self.account.get()
+                    self.employee.SSN = self.ssn.get()
+                # Prevents dialog and writing to file in testing
+                if testing != 1:
+                    system.update_employee_file(total_employees)
+                    messagebox.showinfo("Message", "Save Successful!")
             else:
                 pass
 
@@ -705,5 +866,19 @@ def main():
     app = Window()
     app.mainloop()
 
+# uncomment for UI testing and change to 1
+testing = 0
+# def test():
+#     import Login_Test as lt
+#     import Profiles_Test as pt
+#     import PayScreen_Test as pst
+#     load_employees()
+#     app = Window()
+#     app.after(0, lt.login_series(app.screens[Login_Screen], app))
+#     app.after(0, pt.profiles_series(app.screens[Login_Screen], app.screens[Employee_Profile_Screen], app))
+#     app.after(0, pst.payscreen_series(app.screens[Login_Screen], app.screens[Employee_Profile_Screen], app.screens[Employee_Payroll_Screen], app))
+
 if __name__ == "__main__":
     main()
+#Test stuff, uncomment and comment main to run UI tests
+    #test()
