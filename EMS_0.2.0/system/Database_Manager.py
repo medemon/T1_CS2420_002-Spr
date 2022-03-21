@@ -344,7 +344,7 @@ def find_employee_by_last_name_filtered(last_name_entered, select_emp):
     return_employees = []
     last_name_entered = last_name_entered.upper()
     for e in select_emp:
-        if e.last_name.startswith(last_name_entered):
+        if e.last_name.upper().startswith(last_name_entered):
             return_employees.append(e)
     return return_employees
 
@@ -354,7 +354,7 @@ def find_employee_by_last_name_total(last_name_entered):
     return_employees = []
     last_name_entered = last_name_entered.upper()
     for e in total_employees:
-        if e.last_name.startswith(last_name_entered):
+        if e.last_name.upper().startswith(last_name_entered):
             return_employees.append(e)
     return return_employees
 

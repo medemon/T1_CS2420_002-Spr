@@ -52,6 +52,18 @@ class Window(Tk):
         # Defaults Screen
         self.show_frame(Login_Screen)
 
+    # Shows the user manual pages
+    def user_manual(self, page):
+        win = Toplevel(self)
+        win.geometry("515x515")
+        win.title("User Manual")
+
+        img = Image.open(os.path.dirname(__file__) + '\\images\\' + page)
+        user_image = ImageTk.PhotoImage(img)
+        win.help_label = Label(win, width=515, height=515, image=user_image)
+        win.help_label.image = user_image
+        win.help_label.pack()
+
     # Called when Switching Frames or Screens
     def show_frame(self, cont, arg=NONE):
         if self.user_id != '':
@@ -82,6 +94,12 @@ class Login_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         print("Logging In")
+        # Help Button
+        img = Image.open(os.path.dirname(__file__) + '\\images\\Help.png')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual('Login_Help2.png'))
+        self.help_button.image = help_image
+        self.help_button.place(x=970, y=2)
 
         self.id_label = Label(self, text="User Name", fg="green", font=("Tahoma", 14))
         self.id_box = Entry(self, width=25, font="Tahoma")
@@ -126,6 +144,13 @@ class Login_Screen(Frame):
 class Employee_Profile_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+        img = Image.open(os.path.dirname(__file__) + '\\images\\Help.png')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
+            'Employee_Profile_Help.png'))
+        self.help_button.image = help_image
+        self.help_button.place(x=970, y=2)
+
         # Creates the Logo Image on the Page
         img = Image.open(os.path.dirname(__file__) + '\\images\\Logo.png')
         icon_image = ImageTk.PhotoImage(img)
@@ -134,12 +159,12 @@ class Employee_Profile_Screen(Frame):
         self.logo_label.place(y=45, x=5)
         # Employee Profle Screen Title
         self.title_label = Label(self, text="Employee Profile Screen", fg="green",
-                                font=("Tahoma", 18, "underline", "bold"))
+                                 font=("Tahoma", 18, "underline", "bold"))
         self.title_label.place(height=50, width=300)
 
         # Frame for displaying profile information
         self.profile_screen = Frame(self, height=600, width=690, bg="gray")
-        self.profile_screen.place(x=300, y=10)
+        self.profile_screen.place(x=300, y=35)
 
         # Employee object
         self.employee = object
@@ -219,26 +244,29 @@ class Employee_Profile_Screen(Frame):
         self.end_date_label.place(x=10, y=490)
         self.end_date_entry.place(x=120, y=490)
         self.archived = BooleanVar()
-        self.archived_checkbox = Checkbutton(self.profile_screen, text="Archived", bg='grey', selectcolor='black', variable=self.archived, font=("Tahoma", 13))
+        self.archived_checkbox = Checkbutton(self.profile_screen, text="Archived", bg='grey', selectcolor='black',
+                                             variable=self.archived, font=("Tahoma", 13))
         self.archived_checkbox.place(x=10, y=530)
         self.is_admin = BooleanVar()
-        self.admin_checkbox = Checkbutton(self.profile_screen, text="Admin", bg='grey', selectcolor='black', variable=self.is_admin, font=("Tahoma", 13))
+        self.admin_checkbox = Checkbutton(self.profile_screen, text="Admin", bg='grey', selectcolor='black',
+                                          variable=self.is_admin, font=("Tahoma", 13))
         self.admin_checkbox.place(x=100, y=530)
 
         # Save Button
         self.save_button = Button(self, text="Save", width=7, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: self.save(controller)
-                                    )
+                                  command=lambda: self.save(controller)
+                                  )
         self.save_button.place(x=150, y=380, anchor=CENTER)
 
         # Password Diaplog Button
         self.payroll_button = Button(self, text="Change Password", width=14, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: self.new_password_dialog(controller))
+                                     command=lambda: self.new_password_dialog(controller))
         self.payroll_button.place(x=150, y=420, anchor=CENTER)
 
         # Payroll Screen Button
         self.payroll_button = Button(self, text="Employee payroll", width=14, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: controller.show_frame(Employee_Payroll_Screen, controller.chosen_employee))
+                                     command=lambda: controller.show_frame(Employee_Payroll_Screen,
+                                                                           controller.chosen_employee))
         self.payroll_button.place(x=150, y=460, anchor=CENTER)
 
         # Search Screen Button
@@ -259,16 +287,17 @@ class Employee_Profile_Screen(Frame):
             self.arch.set("Enter New Employee")
             self.employee = None
             self.payroll_button.config(state='disabled')
-            return        
+            return
 
-        # Run permissions check
-        user_access = [self.address_entry,self.state_entry,self.city_entry,self.zip_entry,self.phone_entry]
-        admin_access = [self.first_name_entry,self.last_name_entry,self.dob_entry,self.dept_entry,self.title_entry,self.start_date_entry,self.end_date_entry]
+            # Run permissions check
+        user_access = [self.address_entry, self.state_entry, self.city_entry, self.zip_entry, self.phone_entry]
+        admin_access = [self.first_name_entry, self.last_name_entry, self.dob_entry, self.dept_entry, self.title_entry,
+                        self.start_date_entry, self.end_date_entry]
         # Always sets all Entry to disable first to avoid fields remaining open when switching viewed profiles.
         for i in user_access:
-            i.config(state = 'disabled', disabledbackground="grey", disabledforeground='white')
+            i.config(state='disabled', disabledbackground="grey", disabledforeground='white')
         for i in admin_access:
-            i.config(state = 'disabled', disabledbackground="grey", disabledforeground='white')
+            i.config(state='disabled', disabledbackground="grey", disabledforeground='white')
         self.payroll_button.config(state='disabled')
         self.archived_checkbox.config(state='disabled')
         self.admin_checkbox.config(state='disabled')
@@ -276,13 +305,13 @@ class Employee_Profile_Screen(Frame):
         # Owned account access
         if controller.user_id == id or controller.admin.get():
             for i in user_access:
-                i.config(state = 'normal', bg="white", fg="black")
+                i.config(state='normal', bg="white", fg="black")
             self.payroll_button.config(state='normal')
             self.mode.set("User Edit Mode")
         # Admin access
         if controller.admin.get():
             for i in admin_access:
-                i.config(state = 'normal', bg="white", fg="black")
+                i.config(state='normal', bg="white", fg="black")
             self.archived_checkbox.config(state='normal')
             self.admin_checkbox.config(state='normal')
             self.mode.set("Admin Mode")
@@ -310,32 +339,34 @@ class Employee_Profile_Screen(Frame):
         self.first_time_check(controller)
 
     def save(self, controller):
-            '''Saves all entered data to the employee object ~EXPAND ON THIS LATER, NEEDS CHECKS FOR TRASH ENTRIES!~'''
-            query = messagebox.askquestion('save','save changes?')
-            if query == 'yes':
-                if self.employee != None:
-                    self.employee.first_name = self.first_name.get()
-                    self.employee.last_name =self.last_name.get()
-                    self.employee.address = self.address.get()
-                    self.employee.city = self.city.get()
-                    self.employee.state = self.state.get()
-                    self.employee.zipcode = self.zip.get()
-                    self.employee.phone = self.phone.get()
-                    self.employee.DOB = self.dob.get()
-                    self.employee.dept = self.dept.get()
-                    self.employee.title = self.title.get()
-                    self.employee.start_date = self.start_date.get()
-                    self.employee.end_date = self.end_date.get()
-                    self.employee.archive_employee(self.archived.get())
-                    self.employee.set_admin(self.is_admin.get())
-                    messagebox.showinfo("Message", "Save Successful!")
-                else:
-                    new_list = [self.emp_id.get(),self.first_name.get(),self.last_name.get(),self.address.get(),self.city.get(),self.state.get(),self.zip.get(),self.phone.get(),
-                                self.dob.get(),self.dept.get(),self.title.get(),self.start_date.get(),self.end_date.get(),self.archived.get(),self.is_admin.get()]
-                    messagebox.showinfo("Message", "Please continue on payroll screen")
-                    controller.show_frame(Employee_Payroll_Screen, new_list)
+        '''Saves all entered data to the employee object ~EXPAND ON THIS LATER, NEEDS CHECKS FOR TRASH ENTRIES!~'''
+        query = messagebox.askquestion('save', 'save changes?')
+        if query == 'yes':
+            if self.employee != None:
+                self.employee.first_name = self.first_name.get()
+                self.employee.last_name = self.last_name.get()
+                self.employee.address = self.address.get()
+                self.employee.city = self.city.get()
+                self.employee.state = self.state.get()
+                self.employee.zipcode = self.zip.get()
+                self.employee.phone = self.phone.get()
+                self.employee.DOB = self.dob.get()
+                self.employee.dept = self.dept.get()
+                self.employee.title = self.title.get()
+                self.employee.start_date = self.start_date.get()
+                self.employee.end_date = self.end_date.get()
+                self.employee.archive_employee(self.archived.get())
+                self.employee.set_admin(self.is_admin.get())
+                messagebox.showinfo("Message", "Save Successful!")
             else:
-                pass
+                new_list = [self.emp_id.get(), self.first_name.get(), self.last_name.get(), self.address.get(),
+                            self.city.get(), self.state.get(), self.zip.get(), self.phone.get(),
+                            self.dob.get(), self.dept.get(), self.title.get(), self.start_date.get(),
+                            self.end_date.get(), self.archived.get(), self.is_admin.get()]
+                messagebox.showinfo("Message", "Please continue on payroll screen")
+                controller.show_frame(Employee_Payroll_Screen, new_list)
+        else:
+            pass
 
     def new_password_dialog(self, controller):
         '''Upon User selecting new password, this method will raise a simple dialog box for them to enter the new password'''
@@ -350,12 +381,21 @@ class Employee_Profile_Screen(Frame):
     def first_time_check(self, controller):
         '''This method checks if the employee passwors is at its default for first time users, so it will bring up the new password prompt'''
         default = f"{self.employee.last_name}{self.employee.first_name}{self.employee.SSN[-4:]}"
-        if self.employee.get_password() ==  default and controller.user_id == self.employee.emp_id:
+        if self.employee.get_password() == default and controller.user_id == self.employee.emp_id:
             self.new_password_dialog(controller)
+
 
 class Reports_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+
+        img = Image.open(os.path.dirname(__file__) + '\\images\\Help.png')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
+            'Paylog_Report_Help.png'))
+        self.help_button.image = help_image
+        self.help_button.place(x=970, y=2)
+
 
         self.title_label = Label(self, text="Paylog Report", fg="green", font=("Tahoma", 20, "underline"))
         self.emp_profile_button = Button(self, text="Return to Search Screen",
@@ -379,6 +419,14 @@ class Reports_Screen(Frame):
 class Employee_Payroll_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+
+        img = Image.open(os.path.dirname(__file__) + '\\images\\Help.png')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
+            'Employee_Payroll_Help.png'))
+        self.help_button.image = help_image
+        self.help_button.place(x=970, y=2)
+
         # Creates the Logo Image on the Page
         img = Image.open(os.path.dirname(__file__) + '\\images\\Logo.png')
         icon_image = ImageTk.PhotoImage(img)
@@ -387,7 +435,7 @@ class Employee_Payroll_Screen(Frame):
         self.logo_label.place(y=45, x=5)
         # Employee Payroll Screen Title
         self.title_label = Label(self, text="Employee Payroll Screen", fg="green",
-                                font=("Tahoma", 18, "underline", "bold"))
+                                 font=("Tahoma", 18, "underline", "bold"))
         self.title_label.place(height=50, width=300)
 
         # Frame for displaying profile information
@@ -419,7 +467,7 @@ class Employee_Payroll_Screen(Frame):
         self.ssn_entry = Entry(self.profile_screen, bd=1, width=70, textvariable=self.ssn)
         self.ssn_label.place(x=10, y=170)
         self.ssn_entry.place(x=150, y=170)
-        self.classy_opts = ['Salaried','Commissioned','Hourly']
+        self.classy_opts = ['Salaried', 'Commissioned', 'Hourly']
         self.classy = StringVar()
         self.classy_label = Label(self.profile_screen, text="classification:", bg="grey", font=("Tahoma", 13))
         self.classy_drop = OptionMenu(self.profile_screen, self.classy, *self.classy_opts)
@@ -455,20 +503,22 @@ class Employee_Payroll_Screen(Frame):
         self.account_entry.place(x=150, y=410)
 
         # Receipt Button
-        self.receipt_button = Button(self.profile_screen, text="Add Receipt", width=14, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: self.add_receipt_diag()
-                                    )
+        self.receipt_button = Button(self.profile_screen, text="Add Receipt", width=14, bg="grey",
+                                     font=("Tahoma", 10, "bold"),
+                                     command=lambda: self.add_receipt_diag()
+                                     )
         self.receipt_button.place(x=10, y=490)
 
         # Save Button
         self.save_button = Button(self, text="Save", width=7, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: self.save(controller)
-                                    )
+                                  command=lambda: self.save(controller)
+                                  )
         self.save_button.place(x=150, y=380, anchor=CENTER)
 
         # Profile Screen Button
         self.profile_button = Button(self, text="Employee Profile", width=14, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: controller.show_frame(Employee_Profile_Screen, controller.chosen_employee))
+                                     command=lambda: controller.show_frame(Employee_Profile_Screen,
+                                                                           controller.chosen_employee))
         self.profile_button.place(x=150, y=420, anchor=CENTER)
 
         # Search Screen Button
@@ -481,14 +531,14 @@ class Employee_Payroll_Screen(Frame):
         and populates the entry box with data from the given id's employee object'''
 
         # If there is a list, it is a new employee, leaves entries blank and open
-        if isinstance(arg,list):
-             self.arch.set("Enter New Employee")
-             self.new_list = arg
-             self.receipt_button.config(state='disable')
-             return
+        if isinstance(arg, list):
+            self.arch.set("Enter New Employee")
+            self.new_list = arg
+            self.receipt_button.config(state='disable')
+            return
         # Run permissions check
-        user_access = [self.routing_entry,self.account_entry]
-        admin_access = [self.salary_entry,self.rate_entry,self.ssn_entry]
+        user_access = [self.routing_entry, self.account_entry]
+        admin_access = [self.salary_entry, self.rate_entry, self.ssn_entry]
         # Always sets all Entry to disable first to avoid fields remaining open when switching viewed profiles.
         for i in user_access:
             i.config(state='disabled', disabledbackground='grey', disabledforeground='white')
@@ -536,64 +586,68 @@ class Employee_Payroll_Screen(Frame):
         else:
             self.arch.set("Employee is ACTIVE")
 
-    def save(self,controller):
-            '''Saves all entered data to the employee object ~EXPAND ON THIS LATER, NEEDS CHECKS FOR TRASH ENTRIES!~'''
-            # If there is a list, it is a new Employee, uses the new Employee save
-            if self.new_list != None:
-                salary = 0
-                comm = 0
-                hourly = 0 
-                if self.classy.get() == 'Salaried':
-                    self.classy.set(1)
-                    salary = self.salary.get()
-                elif self.classy.get() == 'Commissioned':
-                    self.classy.set(2)
-                    salary = self.salary.get()
-                    comm = self.rate.get()
-                elif self.classy.get() == 'Hourly':
-                    self.classy.set(3)
-                    comm = self.rate.get()
-                if self.pay_method.get() == 'Direct Deposit':
-                    self.pay_method.set(2)
-                else:
-                     self.pay_method.set(1)
-                add = [self.classy.get(),[salary,comm,hourly],self.pay_method.get(),self.routing.get(),self.account.get(),self.ssn.get()]
-                self.new_list.extend(add)
-                e = Employee(self.new_list[0], self.new_list[2], self.new_list[1], self.new_list[3], self.new_list[4], self.new_list[5], self.new_list[6], 
-                             self.new_list[15], self.new_list[17], self.new_list[16], self.new_list[18],self.new_list[19], self.new_list[7], self.new_list[20], 
-                             self.new_list[8], self.new_list[11], self.new_list[12], self.new_list[10], self.new_list[9], self.new_list[13], self.new_list[14])
-                total_employees.append(e)
-                e.set_default_password()
-                controller.select_employee(e.emp_id)
-                messagebox.showinfo("Message", "New Employee Added!")
-                return
-
-            query = messagebox.askquestion('save','save changes?')
-            if query == 'yes':
-                if self.classy.get() == 'Salaried':
-                    if self.salary.get() != "":
-                        self.employee.pay_rates[0] = self.salary.get()
-                    self.employee.classification = Salaried(self.employee.pay_rates[0])
-                elif self.classy.get() == 'Commissioned':
-                    if self.salary.get() != "":
-                        self.employee.pay_rates[0] = self.salary.get()
-                    if self.rate.get() != "":
-                        self.employee.pay_rates[1] = self.rate.get()
-                    self.employee.classification = Commissioned(self.employee.pay_rates[0],self.employee.pay_rates[1])
-                elif self.classy.get() == 'Hourly':
-                    if self.rate.get() != "":
-                        self.employee.pay_rates[2] = self.rate.get()
-                    self.employee.classification = Hourly(self.employee.pay_rates[2])
-                if self.pay_method.get() == 'Direct Deposit':
-                    self.employee.payment_method = 2
-                else:
-                    self.employee.payment_method = 1
-                self.employee.route = self.routing.get()
-                self.employee.accounting = self.account.get()
-                self.employee.SSN = self.ssn.get()
-                messagebox.showinfo("Message", "Save Successful!")
+    def save(self, controller):
+        '''Saves all entered data to the employee object ~EXPAND ON THIS LATER, NEEDS CHECKS FOR TRASH ENTRIES!~'''
+        # If there is a list, it is a new Employee, uses the new Employee save
+        if self.new_list != None:
+            salary = 0
+            comm = 0
+            hourly = 0
+            if self.classy.get() == 'Salaried':
+                self.classy.set(1)
+                salary = self.salary.get()
+            elif self.classy.get() == 'Commissioned':
+                self.classy.set(2)
+                salary = self.salary.get()
+                comm = self.rate.get()
+            elif self.classy.get() == 'Hourly':
+                self.classy.set(3)
+                comm = self.rate.get()
+            if self.pay_method.get() == 'Direct Deposit':
+                self.pay_method.set(2)
             else:
-                pass
+                self.pay_method.set(1)
+            add = [self.classy.get(), [salary, comm, hourly], self.pay_method.get(), self.routing.get(),
+                   self.account.get(), self.ssn.get()]
+            self.new_list.extend(add)
+            e = Employee(self.new_list[0], self.new_list[2], self.new_list[1], self.new_list[3], self.new_list[4],
+                         self.new_list[5], self.new_list[6],
+                         self.new_list[15], self.new_list[17], self.new_list[16], self.new_list[18], self.new_list[19],
+                         self.new_list[7], self.new_list[20],
+                         self.new_list[8], self.new_list[11], self.new_list[12], self.new_list[10], self.new_list[9],
+                         self.new_list[13], self.new_list[14])
+            total_employees.append(e)
+            e.set_default_password()
+            controller.select_employee(e.emp_id)
+            messagebox.showinfo("Message", "New Employee Added!")
+            return
+
+        query = messagebox.askquestion('save', 'save changes?')
+        if query == 'yes':
+            if self.classy.get() == 'Salaried':
+                if self.salary.get() != "":
+                    self.employee.pay_rates[0] = self.salary.get()
+                self.employee.classification = Salaried(self.employee.pay_rates[0])
+            elif self.classy.get() == 'Commissioned':
+                if self.salary.get() != "":
+                    self.employee.pay_rates[0] = self.salary.get()
+                if self.rate.get() != "":
+                    self.employee.pay_rates[1] = self.rate.get()
+                self.employee.classification = Commissioned(self.employee.pay_rates[0], self.employee.pay_rates[1])
+            elif self.classy.get() == 'Hourly':
+                if self.rate.get() != "":
+                    self.employee.pay_rates[2] = self.rate.get()
+                self.employee.classification = Hourly(self.employee.pay_rates[2])
+            if self.pay_method.get() == 'Direct Deposit':
+                self.employee.payment_method = 2
+            else:
+                self.employee.payment_method = 1
+            self.employee.route = self.routing.get()
+            self.employee.accounting = self.account.get()
+            self.employee.SSN = self.ssn.get()
+            messagebox.showinfo("Message", "Save Successful!")
+        else:
+            pass
 
     def add_receipt_diag(self):
         '''Upon User selecting add recept, this method will raise a simple dialog box for them to enter the amount'''
@@ -602,10 +656,16 @@ class Employee_Payroll_Screen(Frame):
         messagebox.showinfo("Message", "Reciepts updated!")
 
 
-
 class Search_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+        img = Image.open(os.path.dirname(__file__) + '\\images\\Help.png')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
+            'Employee_Search_Help.png'))
+        self.help_button.image = help_image
+        self.help_button.place(x=970, y=5)
+
         # Creates the Logo Image on the Page
         img = Image.open(os.path.dirname(__file__) + '\\images\\Logo.png')
         icon_image = ImageTk.PhotoImage(img)
@@ -631,7 +691,7 @@ class Search_Screen(Frame):
 
         # Frame for displaying all results
         self.results_screen = Frame(self, height=600, width=690, bg="gray")
-        self.results_screen.place(x=300, y=10)
+        self.results_screen.place(x=300, y=35)
 
         # Search Button
         self.search_button = Button(self, text="Search", width=7, bg="grey", font=("Tahoma", 10, "bold"),
@@ -642,7 +702,7 @@ class Search_Screen(Frame):
         # New Employee Button and changes selected employee to 0
         self.new_employee_button = Button(self, text="Add Employee", width=12, bg="grey", font=("Tahoma", 10, "bold"),
                                           command=lambda: controller.select_employee('0'))
-        
+
         # Report Button
         self.report_button = Button(self, text="Reports Screen",
                                     command=lambda: controller.show_frame(Reports_Screen))
@@ -695,9 +755,10 @@ class Search_Screen(Frame):
             y_loc += 81
 
     # Clears the Widgets Each search so they do not overlap one another
-    def clear_widgets(self,results_screen):
+    def clear_widgets(self, results_screen):
         for widgets in results_screen.winfo_children():
             widgets.destroy()
+
 
 if __name__ == "__main__":
     main()
