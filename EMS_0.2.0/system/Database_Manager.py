@@ -2,10 +2,9 @@
 
 # import modules
 from abc import ABC, abstractmethod # used to make abstract classes and methods
-import os
 from pathlib import Path
 # System control to reset employees.csv or password database
-from . import System_Control as system
+
 
 # vars
 PAY_LOGFILE = 'paylog.txt'  # saved file to write to
@@ -378,6 +377,7 @@ def main():
 
 
 if __name__ == "__main__":
+    import System_Control as system
     main()
 
     # Testing password functionality by changing everyones password to fart

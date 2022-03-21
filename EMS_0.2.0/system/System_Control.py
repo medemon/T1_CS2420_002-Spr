@@ -1,4 +1,4 @@
-import random, os
+import random
 from pathlib import Path
 """
 Author: Nicolas Child
@@ -168,7 +168,7 @@ def update_employee_file(emp_list):
         for employee in emp_list:
             f.write(f"{employee.emp_id},{employee.first_name},{employee.last_name},{employee.address},{employee.city},{employee.state},{employee.zipcode},{int(employee.classification)},")
             f.write(f"{employee.payment_method},{employee.pay_rates[0]},{employee.pay_rates[1]},{employee.pay_rates[2]},{employee.route},{employee.accounting},{employee.phone},")
-            f.write(f"{employee.SSN},{employee.DOB},{employee.start_date},{employee.end_date},{employee.title},{employee.dept},{employee.archived},{employee.admin}")
+            f.write(f"{employee.SSN},{employee.DOB},{employee.start_date},{employee.end_date},{employee.title},{employee.dept},{int(employee.archived)},{int(employee.admin)}\n")
     #VALIDATION CODE TO MAKE SURE FILES MATCH
 
 def main():
