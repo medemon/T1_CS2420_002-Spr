@@ -1,8 +1,9 @@
 '''Back end for main program which handles all of the databases and employees'''
 
 # import modules
-from abc import ABC, abstractmethod # used to make abstract classes and methods
+from abc import ABC, abstractmethod  # used to make abstract classes and methods
 from pathlib import Path
+
 # System control to reset employees.csv or password database
 
 
@@ -112,7 +113,7 @@ class Employee:
         self.zipcode = zipcode  # zipcode
         self.classification = classification  # 1=Salaried, 2=Commissioned, 3=Hourly
         self.payment_method = payment_method  # 1=Mailed 2=Wired
-        self.pay_rates = pay_rates # List of pay rates: [0]Salary, [1]Commission, [2]Hourly
+        self.pay_rates = pay_rates  # List of pay rates: [0]Salary, [1]Commission, [2]Hourly
         self.route = route  # This is the routing number if employee choses to have pay delivered electronically
         self.accounting = accounting  # This is the accounting number if employee choses pay electronically
         self.phone = phone  # This is the personal phone
@@ -123,7 +124,7 @@ class Employee:
         self.title = title  # Title of job desc
         self.dept = dept  # Dept where employee belongs
         self.password = ''  # Intentionally
-        self.archived = archived # Archived boolean
+        self.archived = archived  # Archived boolean
         self.admin = admin  # Admin boolean
 
     def get_password(self):
@@ -132,7 +133,7 @@ class Employee:
     def archive_employee(self, bool_var):
         """"Method to toggle archive in employee"""
         self.archived = bool_var
-    
+
     def set_admin(self, bool_var):
         """"Method to toggle archive in employee"""
         self.admin = bool_var
@@ -187,6 +188,7 @@ class Salaried(Classification):
     def __int__(self):
         return 1
 
+
 class Commissioned(Salaried):
     '''This class takes two attributes, salary since Commissioned is the child class to Salaried
 and the rate of commission. The rate is by default set to zero.'''
@@ -198,7 +200,7 @@ and the rate of commission. The rate is by default set to zero.'''
 
     def __str__(self):
         return 'Commissioned'
-    
+
     def __int__(self):
         return 2
 
@@ -330,34 +332,46 @@ corresponding employee id.'''
             return e
 
 
-def find_employee_by_partial_id(id_number):
+def find_employee_by_partial_id(id_number, archive_check):
     '''Takes any amount of id numbers you want and returns any employees that matches '''
     return_employees = []
     for e in total_employees:
-        if e.emp_id.startswith(id_number):
-            return_employees.append(e)
+        if archive_check == 1:
+            if e.emp_id.startswith(id_number):
+                return_employees.append(e)
+        else:
+            if e.emp_id.startswith(id_number) and int(e.archived) == archive_check:
+                return_employees.append(e)
     return return_employees
 
 
-def find_employee_by_last_name_filtered(last_name_entered, select_emp):
+def find_employee_by_last_name_filtered(last_name_entered, select_emp, archive_check):
     '''Takes a last name or partial last name and filters through an already filtered list of employees'''
     return_employees = []
     last_name_entered = last_name_entered.upper()
     for e in select_emp:
-        if e.last_name.upper().startswith(last_name_entered):
-            return_employees.append(e)
+        if archive_check == 1:
+            if e.last_name.upper().startswith(last_name_entered):
+                return_employees.append(e)
+        else:
+            if e.last_name.upper().startswith(last_name_entered) and int(e.archived) == archive_check:
+                return_employees.append(e)
     return return_employees
 
 
-def find_employee_by_last_name_total(last_name_entered):
+def find_employee_by_last_name_total(last_name_entered, archive_check):
     '''Takes a last name or partial last name and filters through all employees'''
     return_employees = []
     last_name_entered = last_name_entered.upper()
     for e in total_employees:
-        if e.last_name.upper().startswith(last_name_entered):
-            return_employees.append(e)
-    return return_employees
+        if archive_check == 1:
+            if e.last_name.upper().startswith(last_name_entered):
+                return_employees.append(e)
+        else:
+            if e.last_name.upper().startswith(last_name_entered) and int(e.archived) == archive_check:
+                return_employees.append(e)
 
+    return return_employees
 
 
 def run_payroll():
@@ -378,6 +392,7 @@ def main():
 
 if __name__ == "__main__":
     import System_Control as system
+
     main()
 
     # Testing password functionality by changing everyones password to fart
@@ -420,4 +435,3 @@ if __name__ == "__main__":
     # clas.add_timecard(8.0)
     # clas.add_timecard(8.0)
     # emp.issue_pay(emp.classification.issue_payment())
-

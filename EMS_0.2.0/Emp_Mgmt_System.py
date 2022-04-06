@@ -9,6 +9,7 @@ from pip._internal import main as pipmain
 
 pipmain(['install', 'pillow'])
 pipmain(['install', 'tkcalendar'])
+
 from tkcalendar import *
 from PIL import ImageTk, Image
 from pathlib import Path
@@ -835,6 +836,7 @@ class Search_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        self.archived = IntVar()
         # Help Button
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Help.png')
         help_image = ImageTk.PhotoImage(img)
@@ -872,10 +874,13 @@ class Search_Screen(Frame):
 
         # Search Button
         self.search_button = Button(self, text="Search", width=7, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: self.display_results(self.results_screen, controller)
+                                    command=lambda: self.display_results(self.results_screen, controller, self.archived.get())
                                     )
         self.search_button.place(x=125, y=380)
 
+        # Archive Box
+        self.archive_box = Checkbutton(self, text="Archived", variable=self.archived, onvalue=1, offvalue=0, selectcolor="green")
+        self.archive_box.place(x=200, y=380)
         # New Employee Button and changes selected employee to 0
         self.new_employee_button = Button(self, text="Add Employee", width=12, bg="grey", font=("Tahoma", 10, "bold"),
                                           command=lambda: controller.select_employee('0'))
@@ -889,21 +894,21 @@ class Search_Screen(Frame):
             self.report_button.place(x=185, y=450)
 
     # Called upon Searching to populate fields
-    def display_results(self, results_screen, controller):
+    def display_results(self, results_screen, controller, archived):
+        print(archived)
         self.clear_widgets(results_screen)
         # Gets the entered Search values
         id_entered = False
         retrieved_employees = []
         get_ID = self.ID_entry.get()
         get_last_name = self.last_name_entry.get()
-
         # Checks the ID and if entered filters through all ID's
         if get_ID == '':
             print("No ID Entered")
         else:
             id_entered = True
             print("ID: " + get_ID)
-            retrieved_employees = find_employee_by_partial_id(get_ID)
+            retrieved_employees = find_employee_by_partial_id(get_ID,archived)
 
         # Checks the Last Name and if entered filters through last names or if entered with employee ID filters by
         # the already filtered ID list
@@ -911,9 +916,9 @@ class Search_Screen(Frame):
             print("No Last Name Entered")
         else:
             if id_entered:
-                retrieved_employees = find_employee_by_last_name_filtered(get_last_name, retrieved_employees)
+                retrieved_employees = find_employee_by_last_name_filtered(get_last_name, retrieved_employees,archived)
             else:
-                retrieved_employees = find_employee_by_last_name_total(get_last_name)
+                retrieved_employees = find_employee_by_last_name_total(get_last_name,archived)
 
             print("Last Name: " + get_last_name)
 
