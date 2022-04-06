@@ -1,4 +1,7 @@
+import shutil
 from tkinter import simpledialog
+from tkinter.filedialog import asksaveasfile
+
 import system.System_Control as system
 from system.Database_Manager import *
 from tkinter import *
@@ -523,22 +526,65 @@ class Reports_Screen(Frame):
         self.help_button.image = help_image
         self.help_button.place(x=970, y=2)
 
-        # Title and Return Button
-        self.title_label = Label(self, text="Paylog Report", fg="green", font=("Tahoma", 20, "underline"))
+        # Creates the Logo Image on the Page
+        img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
+        icon_image = ImageTk.PhotoImage(img)
+        self.logo_label = Label(self, width=300, height=175, image=icon_image)
+        self.logo_label.image = icon_image
+        self.logo_label.place(y=45, x=5)
+
+        # Report Screen Title
+        self.title_label = Label(self, text="Report Screen", fg="green", anchor=CENTER,
+                                 font=("Tahoma", 18, "underline", "bold"))
+        self.title_label.place(height=50, width=300)
+
+        # Report Frame
+        self.report_screen = Frame(self, height=600, width=690, bg="gray")
+        self.report_screen.place(x=300, y=35)
+
+        # Save DataBase Button
+        self.save_button = Button(self, text="Save Paylog Report", command=lambda: save_txt())
+        self.save_button.place(x=160, y=400)
+
+        # Save Pay log Button
+        self.save_button = Button(self, text="Save Database Report", command=lambda: save_csv())
+        self.save_button.place(x=10, y=400)
+
+        # Return Button
         self.emp_profile_button = Button(self, text="Return to Search Screen",
                                          command=lambda: controller.show_frame(Search_Screen))
-        self.title_label.pack()
-        self.emp_profile_button.place(x=10, y=650)
+        self.emp_profile_button.place(x=75, y=470)
 
+        # Paylog Report Display
+        Label(self.report_screen, text="Paylog Report", fg="black", bg="gray",
+              font=("Tahoma", 18, "underline", "bold")).place(x=250, y=0)
         f = open(Path(__file__).resolve().parent / 'HoursReports' / 'paylog.txt', "r")
         yloc = 50
         xloc = 0
         for x in f:
-            Label(self, text=x, fg="green", font=("Tahoma", 8)).place(x=xloc, y=yloc)
+            Label(self.report_screen, text=x, fg="black", bg="gray", font=("Tahoma", 8)).place(x=xloc, y=yloc)
             yloc += 25
             if yloc >= 625:
                 xloc += 500
                 yloc = 50
+
+        # Function to save the total Database Report as a CSV File
+
+        def save_csv():
+            data = [('CSV File', '*.csv')]
+            file = asksaveasfile(filetypes=data, defaultextension='.csv')
+
+            original = r'system/employees.csv'
+            target = file.name
+            shutil.copyfile(original, target)
+
+        def save_txt():
+            data = [('Text File', '*.txt')]
+            file = asksaveasfile(filetypes=data, defaultextension='.txt')
+
+            original = r'HoursReports/paylog.txt'
+            target = file.name
+            shutil.copyfile(original, target)
 
 
 class Employee_Payroll_Screen(Frame):
@@ -838,7 +884,7 @@ class Employee_Payroll_Screen(Frame):
 class Search_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
-
+        self.archived = IntVar()
         # Help Button
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Help.png')
         help_image = ImageTk.PhotoImage(img)
@@ -879,10 +925,13 @@ class Search_Screen(Frame):
 
         # Search Button
         self.search_button = Button(self, text="Search", width=7, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: self.display_results(self.results_screen, controller)
+                                    command=lambda: self.display_results(self.results_screen, controller,self.archived.get())
                                     )
         self.search_button.place(x=125, y=380)
-
+        # Archive CheckBox
+        self.archive_box = Checkbutton(self, text="Archived", variable=self.archived, onvalue=1, offvalue=0,
+                                       selectcolor="green")
+        self.archive_box.place(x=200, y=380)
         # New Employee Button and changes selected employee to 0
         self.new_employee_button = Button(self, text="Add Employee", width=12, bg="grey", font=("Tahoma", 10, "bold"),
                                           command=lambda: controller.select_employee('0'))
@@ -896,7 +945,7 @@ class Search_Screen(Frame):
             self.report_button.place(x=185, y=450)
 
     # Called upon Searching to populate fields
-    def display_results(self, results_screen, controller):
+    def display_results(self, results_screen, controller, archived):
         self.clear_widgets(results_screen)
         # Gets the entered Search values
         id_entered = False
@@ -908,7 +957,7 @@ class Search_Screen(Frame):
             pass
         else:
             id_entered = True
-            self.retrieved_employees = find_employee_by_partial_id(get_ID)
+            self.retrieved_employees = find_employee_by_partial_id(get_ID, archived)
 
         # Checks the Last Name and if entered filters through last names or if entered with employee ID filters by
         # the already filtered ID list
@@ -916,9 +965,9 @@ class Search_Screen(Frame):
             pass
         else:
             if id_entered:
-                self.retrieved_employees = find_employee_by_last_name_filtered(get_last_name, self.retrieved_employees)
+                self.retrieved_employees = find_employee_by_last_name_filtered(get_last_name, self.retrieved_employees, archived)
             else:
-                self.retrieved_employees = find_employee_by_last_name_total(get_last_name)
+                self.retrieved_employees = find_employee_by_last_name_total(get_last_name,archived)
 
         y_loc = 0
 
