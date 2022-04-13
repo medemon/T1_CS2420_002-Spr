@@ -155,6 +155,7 @@ class Employee:
         '''This method writes to the file of how much each employee will be paid. Goes through
         all employees and only writes to the file the employees that will be making money. This function
         takes the amount returned from the emp.classification.issue_payment() method.'''
+        paylogchart_file = Path(__file__).resolve().parent.parent / 'HoursReports' / 'paylogchart.csv'
         if float(payroll) == 0:  # if the employee did not make anything, no payment is written to file
             pass
         else:
@@ -166,6 +167,14 @@ class Employee:
                 else:
                     f.write(f"Wiring {payroll} to {self.first_name} {self.last_name}" \
                             f" to a bank account routing: {self.route} accounting: {self.accounting}\n")
+
+            with open(paylogchart_file, 'a+') as f:  # a+ appends to the file
+                if self.payment_method == str(1):
+                    f.write(f"Mail,{payroll},{self.first_name}, {self.last_name}" \
+                            f",{self.address} {self.city} {self.state} {self.zipcode}\n")
+                else:
+                    f.write(f"Wire, {payroll}, {self.first_name},{self.last_name}" \
+                            f",Routing: {self.route} Accounting: {self.accounting}\n")
 
 
 class Salaried(Classification):
@@ -401,6 +410,10 @@ def find_employee_by_last_name_total(last_name_entered, archive_check):
 
 
 def run_payroll():
+    paylogchart_file = Path(__file__).resolve().parent.parent / 'HoursReports' / 'paylogchart.csv'
+    r = open(paylogchart_file, "a")
+    r.write("Delivery Method, Amount, First Name, Last Name, Location\n")
+    r.close()
     if Path(__file__).resolve().parent.parent / 'HoursReports' / PAY_LOGFILE:  # pay_log_file is a global variable holding ‘payroll.txt’
         Path(__file__).resolve().parent.parent.joinpath('HoursReports', PAY_LOGFILE).unlink()
     for emp in total_employees:  # employees is the global list of Employee objects

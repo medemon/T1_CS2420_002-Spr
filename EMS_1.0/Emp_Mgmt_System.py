@@ -542,7 +542,7 @@ class Reports_Screen(Frame):
         self.report_screen.place(x=300, y=35)
 
         # Save DataBase Button
-        self.save_button = Button(self, text="Save Paylog Report", command=lambda: save_txt())
+        self.save_button = Button(self, text="Issue Payroll", command=lambda: save_txt())
         self.save_button.place(x=160, y=400)
 
         # Save Pay log Button
@@ -578,10 +578,9 @@ class Reports_Screen(Frame):
             shutil.copyfile(original, target)
 
         def save_txt():
-            data = [('Text File', '*.txt')]
-            file = asksaveasfile(filetypes=data, defaultextension='.txt')
-
-            original = r'HoursReports/paylog.txt'
+            data = [('CSV File', '*.csv')]
+            file = asksaveasfile(filetypes=data, defaultextension='.csv')
+            original = r'HoursReports/paylogchart.csv'
             target = file.name
             shutil.copyfile(original, target)
 
@@ -1001,7 +1000,7 @@ class Search_Screen(Frame):
         # Last Name Search Widget and Label
         self.last_name = StringVar()
         self.last_name_label = Label(self, text="Last Name", font=("Tahoma", 13))
-        self.last_name_entry =  Entry(self, bd=1, textvariable=self.last_name, font=("Tahoma", 13))
+        self.last_name_entry = Entry(self, bd=1, textvariable=self.last_name, font=("Tahoma", 13))
         self.last_name_label.place(x=10, y=200)
         self.last_name_entry.place(x=10, y=230)
 
@@ -1016,6 +1015,7 @@ class Search_Screen(Frame):
         self.results_screen = Frame(self, height=600, width=690, bg="gray")
         self.results_screen.place(x=300, y=35)
         self.retrieved_employees = []
+
 
         # Search Button
         self.search_button = Button(self, text="Search", width=7, bg="grey", font=("Tahoma", 10, "bold"),
@@ -1034,7 +1034,7 @@ class Search_Screen(Frame):
         self.report_button = Button(self, text="Reports Screen",
                                     command=lambda: controller.show_frame(Reports_Screen))
         # Runs an Admin Check
-    
+
     def initiate(self, controller, flag):
         if controller.admin.get() == True:
             self.new_employee_button.place(x=15, y=450)
@@ -1044,6 +1044,7 @@ class Search_Screen(Frame):
     # Called upon Searching to populate fields
     def display_results(self, results_screen, controller, archived):
         self.clear_widgets(results_screen)
+
         # Gets the entered Search values
         id_entered = False
         get_ID = self.emp_ID.get()
