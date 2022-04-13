@@ -302,10 +302,20 @@ def process_timecards():
             info = line.split(',')
             emp = find_employee_by_id(info[0])
             for num in info[1:]:
-                if emp.classification == 'Hourly':
+                if str(emp.classification) == 'Hourly':
                     pay_stub = num.strip()
                     emp.classification.timecard.append(pay_stub)
 
+def write_timecard_file():
+    '''Writes hours for each hourly employee to timecard file'''
+    timecards_file = Path(__file__).resolve().parent.parent / 'HoursReports' / 'timecards.csv'
+    with open(timecards_file, 'w') as f:
+        for x in total_employees:
+            if str(x.classification) == 'Hourly' and len(x.classification.timecard) != 0:
+                f.write(f"{x.emp_id}")
+                for y in x.classification.timecard:
+                    f.write(f",{y}")
+                f.write("\n")
 
 def process_receipts():
     '''Stores receipts for each employee who works Commissioned.'''
@@ -315,9 +325,28 @@ def process_receipts():
         for line in data:
             info = line.split(',')
             emp = find_employee_by_id(info[0])
-            if str(emp.classification) == 'Comissioned':
+            if str(emp.classification) == 'Commissioned':
                 for num in info[1:]:
                     emp.classification.receipts.append(num.strip())
+                
+
+def write_receipts_file():
+    '''Writes receipts for each commissioned employee to reciepts file'''
+    receipts_file = Path(__file__).resolve().parent.parent / 'HoursReports' / 'receipts.csv'
+    with open(receipts_file, 'w') as f:
+        for x in total_employees:
+            if str(x.classification) == 'Commissioned' and len(x.classification.receipts) != 0:
+                f.write(f"{x.emp_id}")
+                for y in x.classification.receipts:
+                    f.write(f",{y}")
+                f.write("\n")
+
+def find_employee_by_id(id_number):
+    '''Takes Employee id number as parameter. Returns Employee object from list with the
+corresponding employee id.'''
+    for e in total_employees:
+        if e.emp_id == id_number:
+            return e
 
 
 def find_employee_by_id(id_number):
@@ -328,32 +357,45 @@ corresponding employee id.'''
             return e
 
 
-def find_employee_by_partial_id(id_number):
+def find_employee_by_partial_id(id_number, archive_check):
     '''Takes any amount of id numbers you want and returns any employees that matches '''
     return_employees = []
     for e in total_employees:
-        if e.emp_id.startswith(id_number):
-            return_employees.append(e)
+        if archive_check == 1:
+            if e.emp_id.startswith(id_number):
+                return_employees.append(e)
+        else:
+            if e.emp_id.startswith(id_number) and int(e.archived) == archive_check:
+                return_employees.append(e)
     return return_employees
 
 
-def find_employee_by_last_name_filtered(last_name_entered, select_emp):
+def find_employee_by_last_name_filtered(last_name_entered, select_emp, archive_check):
     '''Takes a last name or partial last name and filters through an already filtered list of employees'''
     return_employees = []
     last_name_entered = last_name_entered.upper()
     for e in select_emp:
-        if e.last_name.upper().startswith(last_name_entered):
-            return_employees.append(e)
+        if archive_check == 1:
+            if e.last_name.upper().startswith(last_name_entered):
+                return_employees.append(e)
+        else:
+            if e.last_name.upper().startswith(last_name_entered) and int(e.archived) == archive_check:
+                return_employees.append(e)
     return return_employees
 
 
-def find_employee_by_last_name_total(last_name_entered):
+def find_employee_by_last_name_total(last_name_entered, archive_check):
     '''Takes a last name or partial last name and filters through all employees'''
     return_employees = []
     last_name_entered = last_name_entered.upper()
     for e in total_employees:
-        if e.last_name.upper().startswith(last_name_entered):
-            return_employees.append(e)
+        if archive_check == 1:
+            if e.last_name.upper().startswith(last_name_entered):
+                return_employees.append(e)
+        else:
+            if e.last_name.upper().startswith(last_name_entered) and int(e.archived) == archive_check:
+                return_employees.append(e)
+
     return return_employees
 
 
