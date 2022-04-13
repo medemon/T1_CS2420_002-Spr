@@ -302,10 +302,20 @@ def process_timecards():
             info = line.split(',')
             emp = find_employee_by_id(info[0])
             for num in info[1:]:
-                if emp.classification == 'Hourly':
+                if str(emp.classification) == 'Hourly':
                     pay_stub = num.strip()
                     emp.classification.timecard.append(pay_stub)
 
+def write_timecard_file():
+    '''Writes hours for each hourly employee to timecard file'''
+    timecards_file = Path(__file__).resolve().parent.parent / 'HoursReports' / 'timecards.csv'
+    with open(timecards_file, 'w') as f:
+        for x in total_employees:
+            if str(x.classification) == 'Hourly' and len(x.classification.timecard) != 0:
+                f.write(f"{x.emp_id}")
+                for y in x.classification.timecard:
+                    f.write(f",{y}")
+                f.write("\n")
 
 def process_receipts():
     '''Stores receipts for each employee who works Commissioned.'''
@@ -315,10 +325,21 @@ def process_receipts():
         for line in data:
             info = line.split(',')
             emp = find_employee_by_id(info[0])
-            if str(emp.classification) == 'Comissioned':
+            if str(emp.classification) == 'Commissioned':
                 for num in info[1:]:
                     emp.classification.receipts.append(num.strip())
+                
 
+def write_receipts_file():
+    '''Writes receipts for each commissioned employee to reciepts file'''
+    receipts_file = Path(__file__).resolve().parent.parent / 'HoursReports' / 'receipts.csv'
+    with open(receipts_file, 'w') as f:
+        for x in total_employees:
+            if str(x.classification) == 'Commissioned' and len(x.classification.receipts) != 0:
+                f.write(f"{x.emp_id}")
+                for y in x.classification.receipts:
+                    f.write(f",{y}")
+                f.write("\n")
 
 def find_employee_by_id(id_number):
     '''Takes Employee id number as parameter. Returns Employee object from list with the

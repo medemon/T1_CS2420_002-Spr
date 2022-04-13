@@ -135,7 +135,7 @@ def restart_system():
     #ID,Name,Address,City,State,Zip,Classification,PayMethod,Salary,Hourly,Commission,Route,Account,Phone,SSN,DOB,start_date,end_date,title,department
     new_employees_file = Path(__file__).resolve().parent / 'employees.csv'
     with open(new_employees_file, 'w') as f:
-        f.write("ID,first,last,Address,City,State,Zip,Classification,PayMethod,Salary,Hourly,Commission,Route,Account,Phone,SSN,DOB,Start_Date,End_Date,Title,Department,Archived,Admin\n")
+        f.write("ID,first,last,Address,City,State,Zip,Classification,PayMethod,Salary,Hourly,Commission,Route,AccountingNum,Phone,SSN,DOB,Start_Date,End_Date,Title,Department,Archived,Admin\n")
         for line in lines:
             for item in range(len(line)):
                 #Need to check if it is the last item in the list, if it is we don't want to end with a comma
@@ -163,7 +163,7 @@ def update_employee_file(emp_list):
 
     new_employees_file = Path(__file__).resolve().parent / 'employees.csv'
     with open(new_employees_file, 'w') as f:
-        f.write("ID,first,last,address,city,state,zip,classification,paymentmethod,salary,hourly,commission,routing,AccountingNum")
+        f.write("ID,first,last,address,city,state,zip,classification,paymentmethod,salary,hourly,commission,routing,AccountingNum,")
         f.write("phone,SSN,DOB,startDate,endDate,title,dept,Archived,Admin\n")
         for employee in emp_list:
             f.write(f"{employee.emp_id},{employee.first_name},{employee.last_name},{employee.address},{employee.city},{employee.state},{employee.zipcode},{int(employee.classification)},")
