@@ -87,12 +87,12 @@ class Window(Tk):
     # Shows the user manual pages
     def user_manual(self, page):
         win = Toplevel(self)
-        win.geometry("515x515")
+        win.geometry("600x750")
         win.title("User Manual")
 
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / page)
         user_image = ImageTk.PhotoImage(img)
-        win.help_label = Label(win, width=515, height=515, image=user_image)
+        win.help_label = Label(win, width=600, height=725, image=user_image)
         win.help_label.image = user_image
         win.help_label.pack()
 
