@@ -1,4 +1,4 @@
-ID,first,last,address,city,state,zip,classification,paymentmethod,salary,hourly,commission,routing,AccountingNumphone,SSN,DOB,startDate,endDate,title,dept,Archived,Admin
+ID,first,last,address,city,state,zip,classification,paymentmethod,salary,hourly,commission,routing,AccountingNum,phone,SSN,DOB,startDate,endDate,title,dept,Archived,Admin
 688997,Karina,Gay,998 Vitae St.,Atlanta,GA,45169,1,1,45884.99,46.92,34,30417353-K,465794-3611,801-693-2144,372-25-9228,8/16/88,04/4/19,None,Supervisor,Digital design Department,0,1
 522759,TaShya,Snow,2624 Hendrerit St.,College,AK,99789,2,2,50005.50,68.13,25,36644938-8,244269-0000,801-891-1145,823-67-5474,12/26/78,10/4/14,None,Supervisor,Low Level Design Department,0,0
 165966,Rooney,Alvarado,4963 Nisl. St. Ap #185,Gillette,WY,20226,3,2,34532.37,21.53,24,37324307-8,422046-0739,801-665-1261,501-97-4659,7/24/65,09/8/18,None,Employee,Statistics Department,0,0
