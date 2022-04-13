@@ -308,7 +308,7 @@ class Employee_Profile_Screen(Frame):
 
         # Search Screen Button
         self.search_button = Button(self, text="Search Screen", width=14, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: controller.show_frame(Search_Screen))
+                                    command=lambda: controller.show_frame(Search_Screen, 1))
         self.search_button.place(x=150, y=500, anchor=CENTER)
 
     def initiate(self, controller, id):
@@ -551,7 +551,7 @@ class Reports_Screen(Frame):
 
         # Return Button
         self.emp_profile_button = Button(self, text="Return to Search Screen",
-                                         command=lambda: controller.show_frame(Search_Screen))
+                                         command=lambda: controller.show_frame(Search_Screen, 1))
         self.emp_profile_button.place(x=75, y=470)
 
         # Paylog Report Display
@@ -701,7 +701,7 @@ class Employee_Payroll_Screen(Frame):
 
         # Search Screen Button
         self.search_button = Button(self, text="Search Screen", width=14, bg="grey", font=("Tahoma", 10, "bold"),
-                                    command=lambda: controller.show_frame(Search_Screen))
+                                    command=lambda: controller.show_frame(Search_Screen, 1))
         self.search_button.place(x=150, y=460, anchor=CENTER)
 
     def initiate(self, controller, arg):
@@ -792,13 +792,14 @@ class Employee_Payroll_Screen(Frame):
                 if self.rate.get().replace('.', '').isnumeric() == False or self.rate.get() == "":
                     error_message = "Invalid value for Rate. Remove commas, numerical characters only."
                     field_pass = False
-            if self.routing.get().replace('-', '')[:-1].isnumeric() == False or 6 > len(
-                    self.routing.get().replace('-', '')) > 9:
-                error_message = "Invalid value for Routing Number. 6 to 9 digits, numerical characters only with exception of last digit."
-                field_pass = False
-            if self.account.get().replace('-', '').isnumeric() == False or len(self.account.get().replace('-', '')) < 9:
-                error_message = "Invalid value for Routing Number. At least, numerical characters only."
-                field_pass = False
+            if self.pay_method.get() == 'Direct Deposit':
+                if self.routing.get().replace('-', '')[:-1].isnumeric() == False or 6 > len(
+                        self.routing.get().replace('-', '')) > 9:
+                    error_message = "Invalid value for Routing Number. 6 to 9 digits, numerical characters only with exception of last digit."
+                    field_pass = False
+                if self.account.get().replace('-', '').isnumeric() == False or len(self.account.get().replace('-', '')) < 9:
+                    error_message = "Invalid value for Routing Number. At least, numerical characters only."
+                    field_pass = False
             if self.ssn.get().replace('-', '').isnumeric() == False or len(self.ssn.get().replace('-', '')) != 9:
                 error_message = "Invalid value for Social Security Number. Must be 9 numerical characters only."
                 field_pass = False
@@ -1033,9 +1034,12 @@ class Search_Screen(Frame):
         self.report_button = Button(self, text="Reports Screen",
                                     command=lambda: controller.show_frame(Reports_Screen))
         # Runs an Admin Check
-        if controller.admin.get():
+    
+    def initiate(self, controller, flag):
+        if controller.admin.get() == True:
             self.new_employee_button.place(x=15, y=450)
             self.report_button.place(x=185, y=450)
+
 
     # Called upon Searching to populate fields
     def display_results(self, results_screen, controller, archived):
