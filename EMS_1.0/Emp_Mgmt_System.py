@@ -22,7 +22,6 @@ class Window(Tk):
         Tk.__init__(self, *args, **kwargs)
         # Admin Status
         self.admin = BooleanVar()
-        self.admin.set(True)
         # User ID
         self.user_id = ''
         # Chosen Employee if viewing information
@@ -675,11 +674,18 @@ class Employee_Payroll_Screen(Frame):
         self.account_entry.place(x=150, y=410)
 
         # Receipt Button
-        self.receipt_button = Button(self.profile_screen, text="Add Receipt", width=14, bg="grey",
+        self.receipt_button = Button(self.profile_screen, text="Receipts", width=14, bg="grey",
                                      font=("Tahoma", 10, "bold"),
-                                     command=lambda: self.add_receipt_diag()
+                                     command=lambda: self.receipt_popup(controller)
                                      )
         self.receipt_button.place(x=10, y=490)
+
+        # Hours Button
+        self.hours_button = Button(self.profile_screen, text="Hours", width=14, bg="grey",
+                                     font=("Tahoma", 10, "bold"),
+                                     command=lambda: self.hours_popup(controller)
+                                     )
+        self.hours_button.place(x=10, y=530)
 
         # Save Button
         self.save_button = Button(self, text="Save", width=7, bg="grey", font=("Tahoma", 10, "bold"),
@@ -725,6 +731,7 @@ class Employee_Payroll_Screen(Frame):
         self.classy_drop.config(state='disabled')
         self.pay_method_drop.config(state='disabled')
         self.receipt_button.config(state='disabled')
+        self.hours_button.config(state='disabled')
         self.mode.set("Read-only Mode")
         # Owned account access
         if controller.user_id == arg or controller.admin.get():
@@ -755,6 +762,7 @@ class Employee_Payroll_Screen(Frame):
         elif int(self.employee.classification) == 3:
             self.rate.set(self.employee.pay_rates[1])
             self.salary_entry.config(state='disabled', disabledbackground='grey', disabledforeground='white')
+            self.hours_button.config(state='normal')
         self.routing.set(self.employee.route)
         self.account.set(self.employee.accounting)
         self.emp_id.set(self.employee.emp_id)
@@ -874,12 +882,97 @@ class Employee_Payroll_Screen(Frame):
         else:
             pass
 
-    def add_receipt_diag(self):
-        '''Upon User selecting add recept, this method will raise a simple dialog box for them to enter the amount'''
-        query = simpledialog.askstring("Update Reciepts", "Enter receipt amount.")
-        self.employee.classification.add_receipt(query)
-        messagebox.showinfo("Message", "Reciepts updated!")
+    def receipt_popup(self, controller):
+        receipt = Toplevel(controller)
+        receipt.geometry("300x500")
+        receipt.title("View Receipts")
+        add = Button(receipt, text='Add receipt', width=10, bg="grey", font=("Tahoma", 10, "bold"),
+                                    command=lambda: [self.add_receipt_diag(controller),receipt.destroy()])
+        add.place(x=60, y=20, anchor=CENTER)
+        i = 1
+        y_loc = 40
+        for j in self.employee.classification.receipts:
+            Label(receipt, text=(f"Receipt {i}: ${j}"), font=("Tahoma", 13)).place(x=20,y=y_loc)
+            Button(receipt, text="Edit receipt", width=10, bg="grey", font=("Tahoma", 10, "bold"),
+                                    command=lambda x=i-1: [self.edit_receipt_dialog(x, controller), receipt.destroy()]).place(x=180, y=y_loc)
+            i += 1
+            y_loc += 40
 
+    def add_receipt_diag(self, controller):
+        '''Upon User selecting add receipt, this method will raise a simple dialog box for them to enter the amount'''
+        query = simpledialog.askstring("Update Receipts", "Enter receipt amount.")
+        if query != None:
+            if query.replace('.','',1).isnumeric():
+                self.employee.classification.add_receipts(round(float(query), 2))
+                write_receipts_file()
+                messagebox.showinfo("Message", "Receipt Added!")
+            else:
+                messagebox.showinfo("Message", "Must be a number! No symbols, only one decimal.")
+        else:
+            messagebox.showinfo("Message", "Nothing Added!")
+        self.receipt_popup(controller)
+
+    def edit_receipt_dialog(self, loc, controller):
+        '''Upon User selecting edit receipt, this method will raise a simple dialog box for them to enter the updated amount'''
+        query = simpledialog.askstring("Edit selected receipt amount", "Enter new value.")
+        if query != None:
+            if query.replace('.','',1).isnumeric():
+                self.employee.classification.receipts[loc] = round(float(query), 2)
+                write_receipts_file()
+                messagebox.showinfo("Message", "Amount updated!")
+            else:
+                messagebox.showinfo("Message", "Must be a number! No symbols, only one decimal.")            
+        else:
+            messagebox.showinfo("Message", "Nothing changed!")
+        self.receipt_popup(controller)
+
+    def hours_popup(self, controller):
+        if controller.admin.get() == True:
+            a_state = "normal"
+        else:
+            a_state = "disabled"
+        hours = Toplevel(controller)
+        hours.geometry("300x500")
+        hours.title("View hours")
+        add = Button(hours, text='Add shift', width=10, bg="grey", font=("Tahoma", 10, "bold"), state=a_state,
+                                    command=lambda: [self.add_hours_diag(controller),hours.destroy()])
+        add.place(x=60, y=20, anchor=CENTER)
+        i = 1
+        y_loc = 40
+        for j in self.employee.classification.timecard:
+            Label(hours, text=(f"Shift {i}: {j} hours"), font=("Tahoma", 13)).place(x=20,y=y_loc)
+            Button(hours, text="Edit shift", width=10, bg="grey", font=("Tahoma", 10, "bold"), state=a_state,
+                                    command=lambda x=i-1: [self.edit_hours_dialog(x, controller), hours.destroy()]).place(x=180, y=y_loc)
+            i += 1
+            y_loc += 40
+
+    def add_hours_diag(self, controller):
+        '''Upon User selecting add hours, this method will raise a simple dialog box for them to enter the number of hours for shift'''
+        query = simpledialog.askstring("Update Reciepts", "Enter receipt amount.")
+        if query != None:
+            if query.replace('.','',1).isnumeric():
+                self.employee.classification.add_timecard(round(float(query), 2))
+                write_timecard_file()
+                messagebox.showinfo("Message", "Hours Added!")
+            else:
+                messagebox.showinfo("Message", "Must be a number! No symbols, only one decimal.")
+        else:
+            messagebox.showinfo("Message", "Nothing Added!")
+        self.hours_popup(controller)
+
+    def edit_hours_dialog(self, loc, controller):
+        '''Upon User selecting edit hours, this method will raise a simple dialog box for them to enter the new hours for selected shift'''
+        query = simpledialog.askstring("Edit hours for shift", "Enter new value.")
+        if query != None:
+            if query.replace('.','',1).isnumeric():
+                self.employee.classification.timecard[loc] = round(float(query), 2)
+                write_timecard_file()
+                messagebox.showinfo("Message", "Hours updated!")
+            else:
+                messagebox.showinfo("Message", "Must be a number! No symbols, only one decimal.")            
+        else:
+            messagebox.showinfo("Message", "Nothing changed!")
+        self.hours_popup(controller)
 
 class Search_Screen(Frame):
     def __init__(self, parent, controller):
@@ -988,7 +1081,9 @@ class Search_Screen(Frame):
 def main():
     # Main application launches here
     load_employees()
-    if Path(__file__).resolve().parent / 'sytem' / 'employees.csv':
+    process_receipts()
+    process_timecards()
+    if Path(__file__).resolve().parent / 'system' / 'employees.csv':
         pass
     else:
         system.update_employee_file(total_employees)
