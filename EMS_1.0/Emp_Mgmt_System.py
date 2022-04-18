@@ -64,6 +64,7 @@ class Window(Tk):
     def show_frame(self, cont, arg=NONE):
         if self.user_id != '':
             self.check_admin()
+        self.unbind('<return>')
         frame = self.screens[cont]
         frame.tkraise()
         if arg == NONE:
@@ -96,6 +97,21 @@ class Window(Tk):
         win.help_label.image = user_image
         win.help_label.pack()
 
+    # Logout of current user
+    def logout(self):
+        query = messagebox.askquestion('Logout', 'Do you really want to logout?')
+        if query == 'yes':
+            self.admin.set(False)
+            self.user_id = ''
+            self.chosen_employee = ''
+            self.screens[Search_Screen].emp_ID.set('')
+            self.screens[Search_Screen].last_name.set('')
+            self.screens[Search_Screen].clear_widgets(self.screens[Search_Screen].results_screen)
+            self.screens[Login_Screen].id.set('')
+            self.screens[Login_Screen].pw.set('')
+            self.screens[Login_Screen].msg.set('')
+            self.bind('<Return>', lambda e: self.screens[Login_Screen].retrieve_login(self))
+            self.show_frame(Login_Screen)
 
 class Login_Screen(Frame):
     def __init__(self, parent, controller):
@@ -105,7 +121,7 @@ class Login_Screen(Frame):
         help_image = ImageTk.PhotoImage(img)
         self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual('Login_Help2.png'))
         self.help_button.image = help_image
-        self.help_button.place(x=970, y=2)
+        self.help_button.place(x=960, y=2)
 
         # Creates the Logo Image on the Page
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
@@ -145,6 +161,9 @@ class Login_Screen(Frame):
                                     width=14, bg="grey", font=("Tahoma", 10, "bold"))
         self.submit_button.place(x=345, y=350)
 
+        # Bind submit to enter
+        controller.bind('<Return>', lambda e: self.retrieve_login(controller))
+
     def retrieve_login(self, controller):
         id_value = self.id.get()
         pw_value = self.pw.get()
@@ -174,7 +193,14 @@ class Employee_Profile_Screen(Frame):
         self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
             'Employee_Profile_Help.png'))
         self.help_button.image = help_image
-        self.help_button.place(x=970, y=2)
+        self.help_button.place(x=960, y=2)
+
+        # Logout Button
+        img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'logout.ico')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.logout())
+        self.help_button.image = help_image
+        self.help_button.place(x=960, y=650)
 
         # Creates the Logo Image on the Page
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
@@ -358,7 +384,7 @@ class Employee_Profile_Screen(Frame):
         else:
             self.arch.set("Employee is ACTIVE")
 
-            # Run permissions check
+        # Run permissions check
         # Always sets all Entry to disable first to avoid fields remaining open when switching viewed profiles.
         for i in user_access:
             i.config(state='disabled', disabledbackground="grey", disabledforeground='white')
@@ -523,7 +549,14 @@ class Reports_Screen(Frame):
         self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
             'Paylog_Report_Help.png'))
         self.help_button.image = help_image
-        self.help_button.place(x=970, y=2)
+        self.help_button.place(x=960, y=2)
+
+        # Logout Button
+        img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'logout.ico')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.logout())
+        self.help_button.image = help_image
+        self.help_button.place(x=960, y=650)
 
         # Creates the Logo Image on the Page
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
@@ -595,7 +628,14 @@ class Employee_Payroll_Screen(Frame):
         self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
             'Employee_Payroll_Help.png'))
         self.help_button.image = help_image
-        self.help_button.place(x=970, y=2)
+        self.help_button.place(x=960, y=2)
+
+        # Logout Button
+        img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'logout.ico')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.logout())
+        self.help_button.image = help_image
+        self.help_button.place(x=960, y=650)
 
         # Creates the Logo Image on the Page
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
@@ -974,17 +1014,26 @@ class Employee_Payroll_Screen(Frame):
             messagebox.showinfo("Message", "Nothing changed!")
         self.hours_popup(controller)
 
+
 class Search_Screen(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.archived = IntVar()
+
         # Help Button
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Help.png')
         help_image = ImageTk.PhotoImage(img)
         self.help_button = Button(self, image=help_image, command=lambda: controller.user_manual(
             'Employee_Search_Help.png'))
         self.help_button.image = help_image
-        self.help_button.place(x=970, y=2)
+        self.help_button.place(x=960, y=2)
+
+        # Logout Button
+        img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'logout.ico')
+        help_image = ImageTk.PhotoImage(img)
+        self.help_button = Button(self, image=help_image, command=lambda: controller.logout())
+        self.help_button.image = help_image
+        self.help_button.place(x=960, y=650)
 
         # Creates the Logo Image on the Page
         img = Image.open(Path(__file__).resolve().parent / 'UI' / 'images' / 'Logo.png')
@@ -1016,7 +1065,6 @@ class Search_Screen(Frame):
         self.results_screen.place(x=300, y=35)
         self.retrieved_employees = []
 
-
         # Search Button
         self.search_button = Button(self, text="Search", width=7, bg="grey", font=("Tahoma", 10, "bold"),
                                     command=lambda: self.display_results(self.results_screen, controller,self.archived.get())
@@ -1029,17 +1077,24 @@ class Search_Screen(Frame):
         # New Employee Button and changes selected employee to 0
         self.new_employee_button = Button(self, text="Add Employee", width=12, bg="grey", font=("Tahoma", 10, "bold"),
                                           command=lambda: controller.select_employee('0'))
-
+        self.new_employee_button.place(x=15, y=450)
         # Report Button
         self.report_button = Button(self, text="Reports Screen",
                                     command=lambda: controller.show_frame(Reports_Screen))
+        self.report_button.place(x=185, y=450)
         # Runs an Admin Check
 
     def initiate(self, controller, flag):
-        if controller.admin.get() == True:
-            self.new_employee_button.place(x=15, y=450)
-            self.report_button.place(x=185, y=450)
+        # Bind Search to enter
+        controller.bind('<Return>', lambda e: self.display_results(self.results_screen, controller,self.archived.get()))
 
+        # Sets add employee and reports buttons to normal or disabled depending on privilage
+        if controller.admin.get() == True:
+            self.new_employee_button.config(state='normal')
+            self.report_button.config(state='normal')
+        else:
+            self.new_employee_button.config(state='disabled')
+            self.report_button.config(state='disabled')
 
     # Called upon Searching to populate fields
     def display_results(self, results_screen, controller, archived):
