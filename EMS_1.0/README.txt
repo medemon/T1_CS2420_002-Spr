@@ -1,14 +1,13 @@
 Employee Management System 1.0 - EMS has reached 1.0! Nearly feature complete and relatively stable!
 
+1)Extract the EMS folder to your desired directory
+2)Be sure to keep the folder structure for the folder intact, it is important!
+3)Right click on the EMS folder and select 'open in terminal'
+4)To run the program type 'Python Emp_Mgmt_System.py'
 	-To run this program you will need a working python interpreter with the pillow and tkcalender modules installed. 
-	-Running the main program will attempt to install these modules if you do not have them.
-	-Be sure to keep the folder structure for the EMS_1.0 folder intact, it is important!
-	
-	Simply run the Emp_Mgmt_System.py file through your python interpreter to start the program
-	Ex: 'Python your/path/to/EMS_1.0/Emp_Mgmt_System.py' (replace your/path/to with actual path)
+	-Running the main program will attempt to install these modules if you do not have them, if it doesn't launch after running the install script
+	 then launch the program again.
 
-Database:
-	-The database runs off two files, the employee.csv file and passwords.csv (employees_base.csv is for dev purposes)
-	-There are examples of both files in the system folder.
-	-To generate a new examples, simply run the System_Control.py standalone then run Database_Manager.py to populate passwords.
-	 (Warning! This will overwrite your employee.csv and passwords.csv files! back up and use wisely!)
+Test Hourly user with admin privileges - ID: 377013 Password: Password123 (changed from default to avoid warning)
+Test Salary user with admin privileges - ID: 688997 Password: GayKarina9228 (Password remained default to demonstrate the warning and password change feature)
+Test Commission user with out admin privileges - ID: 522759 Password: SnowTaShya5474
